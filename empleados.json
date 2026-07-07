@@ -50,7 +50,9 @@
         "salida": "04:49:55"
       }
     ],
-    "cargo": "Bachero"
+    "cargo": "Bachero",
+    "sueldo_base_mensual": 1,
+    "saldo_actual_sueldo": 1
   },
   {
     "id": "emp-caf-tm-03",
