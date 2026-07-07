@@ -71,8 +71,8 @@
       }
     ],
     "cargo": "Cafetero",
-    "sueldo_base_mensual": 1,
-    "saldo_actual_sueldo": 1
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   },
   {
     "id": "emp-moz-tm-04",
