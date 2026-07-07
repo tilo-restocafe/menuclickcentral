@@ -1,0 +1,194 @@
+[
+  {
+    "id": "emp-coc-tm-01",
+    "nombre": "Carlos Cocina (TM)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 1,
+    "horarios": "07:00 a 15:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "06:55:12",
+        "salida": "15:05:43"
+      },
+      {
+        "fecha": "2026-07-05",
+        "entrada": "04:49:11",
+        "salida": "04:49:24"
+      },
+      {
+        "fecha": "2026-07-07",
+        "entrada": "23:58:23",
+        "salida": "17:29:41"
+      }
+    ],
+    "cargo": "Cocinero"
+  },
+  {
+    "id": "emp-bac-tm-02",
+    "nombre": "Bruno Bachero (TM)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 2,
+    "horarios": "07:00 a 15:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "07:02:45",
+        "salida": "15:00:10"
+      },
+      {
+        "fecha": "2026-07-05",
+        "entrada": "04:49:37",
+        "salida": "04:49:55"
+      }
+    ],
+    "cargo": "Bachero"
+  },
+  {
+    "id": "emp-caf-tm-03",
+    "nombre": "Beto Barista (TM)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 3,
+    "horarios": "07:00 a 15:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "06:48:30",
+        "salida": "15:10:00"
+      }
+    ],
+    "cargo": "Cafetero"
+  },
+  {
+    "id": "emp-moz-tm-04",
+    "nombre": "Maxi Mozo (TM)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 4,
+    "horarios": "07:00 a 15:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "06:50:00",
+        "salida": "15:15:00"
+      }
+    ],
+    "cargo": "Mozo"
+  },
+  {
+    "id": "emp-coc-tt-05",
+    "nombre": "Gabriela Grill (TT)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": null,
+    "horarios": "15:00 a 23:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "14:55:00",
+        "salida": null
+      }
+    ],
+    "cargo": "Cajero"
+  },
+  {
+    "id": "emp-bac-tt-06",
+    "nombre": "Silvia Sapon (TT)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": null,
+    "horarios": "15:00 a 23:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "15:00:00",
+        "salida": null
+      },
+      {
+        "fecha": "2026-06-29",
+        "entrada": "03:06:36",
+        "salida": null
+      }
+    ],
+    "cargo": "Cafetero"
+  },
+  {
+    "id": "emp-caf-tt-07",
+    "nombre": "Tito Tostado (TT)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 7,
+    "horarios": "15:00 a 23:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "14:52:10",
+        "salida": null
+      }
+    ],
+    "cargo": "Mozo"
+  },
+  {
+    "id": "emp-moz-tt-08",
+    "nombre": "Sofia Sillas (TT)",
+    "fechaIngreso": "2026-06-27",
+    "activo": true,
+    "fechaEgreso": null,
+    "numero": 10,
+    "horarios": "15:00 a 23:00",
+    "vacaciones": [],
+    "asistencia": [
+      {
+        "fecha": "2026-06-27",
+        "entrada": "14:48:00",
+        "salida": "03:19:43"
+      },
+      {
+        "fecha": "2026-06-29",
+        "entrada": "03:06:24",
+        "salida": "03:19:50"
+      },
+      {
+        "fecha": "2026-07-05",
+        "entrada": "04:38:53",
+        "salida": "04:39:00"
+      }
+    ],
+    "cargo": "Mozo"
+  },
+  {
+    "id": "emp-1782711979171-937",
+    "nombre": "jony cocina rotativos",
+    "fechaIngreso": "2026-06-29",
+    "activo": true,
+    "fechaEgreso": null,
+    "asistencia": [
+      {
+        "fecha": "2026-06-29",
+        "entrada": "03:06:50",
+        "salida": "03:20:11"
+      }
+    ],
+    "numero": null,
+    "horarios": "rotativos",
+    "vacaciones": [],
+    "cargo": "Cocinero"
+  }
+]
