@@ -120,7 +120,9 @@
         "salida": "15:15:00"
       }
     ],
-    "cargo": "Mozo"
+    "cargo": "Mozo",
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   },
   {
     "id": "emp-coc-tt-05",
