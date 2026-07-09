@@ -1,0 +1,30 @@
+{
+  "id": "cie-1783576477594",
+  "fecha_jornada": "2026-07-09",
+  "turno": "noche",
+  "responsable_caja": "Cholo",
+  "datos_sistema": {
+    "efectivo_teorico": 35000,
+    "tarjeta_debito": 40000,
+    "tarjeta_credito": 0,
+    "qr_digital": 0
+  },
+  "conteo_real": {
+    "notas": "Cierre Noche OK"
+  },
+  "vales_detallados": [
+    {
+      "id": "mov-1783576477557",
+      "tipo": "vale",
+      "detalle": "Adelanto Pedro",
+      "monto": 2500,
+      "fecha": "2026-07-09T05:54:37.557Z",
+      "empleadoId": null,
+      "empleadoNombre": "Pedro",
+      "cerradoMozo": true,
+      "cerrado": true,
+      "cierreId": "cie-1783576477594",
+      "fechaCierre": "2026-07-09T05:54:37.594Z"
+    }
+  ]
+}
