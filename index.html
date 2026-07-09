@@ -174,10 +174,14 @@
                                 <table id="cierres-table">
                                     <thead>
                                         <tr>
-                                            <th>Año/Mes</th>
-                                            <th>Archivo</th>
+                                            <th>Fecha</th>
                                             <th>Turno</th>
-                                            <th>SHA del Commit</th>
+                                            <th>Efec. Real</th>
+                                            <th>Débito</th>
+                                            <th>Crédito</th>
+                                            <th>QR</th>
+                                            <th>Gastos/Ext.</th>
+                                            <th>Vales</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
@@ -544,6 +548,24 @@
                     <button type="submit" class="btn btn-primary">Guardar Empleado</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL: CONSOLIDADO DIARIO -->
+    <div id="modal-consolidado" class="modal">
+        <div class="modal-content modal-lg glass" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h3 id="consolidado-title">Reporte Consolidado del Día</h3>
+                <span class="close-btn" id="close-consolidado">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="consolidado-content">
+                    <!-- Contenido dinámico del consolidado -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ Imprimir Resumen</button>
+            </div>
         </div>
     </div>
 
