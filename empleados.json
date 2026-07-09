@@ -248,7 +248,9 @@
     "numero": null,
     "horarios": "",
     "cargo": "Cafetero",
-    "vacaciones": []
+    "vacaciones": [],
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   },
   {
     "id": "emp-1783485947014-402",
