@@ -190,9 +190,7 @@
         "salida": "01:28:51"
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-moz-tt-08",
@@ -262,6 +260,8 @@
     "numero": null,
     "horarios": "",
     "cargo": "Cajero",
-    "vacaciones": []
+    "vacaciones": [],
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   }
 ]
