@@ -605,7 +605,8 @@ async function saveEmployeesToGitHub(list) {
         if (data.success) {
             return true;
         } else {
-            alert('Error al guardar empleados en GitHub: ' + data.error);
+            const detalles = data.detalles ? '\n\nDetalles: ' + (typeof data.detalles === 'object' ? JSON.stringify(data.detalles) : data.detalles) : '';
+            alert('Error al guardar empleados en GitHub: ' + data.error + detalles);
             return false;
         }
     } catch (e) {
@@ -1005,7 +1006,7 @@ function setupClosureForm() {
         const gastos = parseFloat(document.getElementById('nc-gastos').value) || 0;
         const vales_deducidos = parseFloat(document.getElementById('nc-vales-total').value) || 0;
         
-        const caja_neta_teorica = ventas_totales - debito - credito - qr - gastos - vales_deducidos;
+        const caja_neta_teorica = ventas_totales - tarjeta_debito - tarjeta_credito - qr_digital - gastos - vales_deducidos;
 
         // Conteo Real
         const efectivo_fisico = parseFloat(document.getElementById('nc-efectivo-fisico').value) || 0;
