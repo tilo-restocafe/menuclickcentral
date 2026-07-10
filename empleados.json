@@ -165,7 +165,9 @@
         "salida": null
       }
     ],
-    "cargo": "Cafetero"
+    "cargo": "Cafetero",
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   },
   {
     "id": "emp-caf-tt-07",
