@@ -1,5 +1,5 @@
 {
-  "id": "cie-1783657693993",
+  "id": "cie-1783657822649",
   "fecha_jornada": "2026-07-10",
   "turno": "noche",
   "responsable_caja": "Cholo",
@@ -14,30 +14,30 @@
   },
   "vales_detallados": [
     {
-      "id": "mov-1783657693961",
+      "id": "mov-1783657822613",
       "tipo": "vale",
       "detalle": "Adelanto Maria",
       "monto": 2000,
-      "fecha": "2026-07-10T04:28:13.961Z",
+      "fecha": "2026-07-10T04:30:22.613Z",
       "empleadoId": null,
       "empleadoNombre": "Maria",
       "cerradoMozo": true,
       "cerrado": true,
-      "cierreId": "cie-1783657693993",
-      "fechaCierre": "2026-07-10T04:28:13.993Z"
+      "cierreId": "cie-1783657822649",
+      "fechaCierre": "2026-07-10T04:30:22.649Z"
     },
     {
-      "id": "mov-1783657693966",
+      "id": "mov-1783657822619",
       "tipo": "vale",
       "detalle": "Adelanto Lucas",
       "monto": 2500,
-      "fecha": "2026-07-10T04:28:13.966Z",
+      "fecha": "2026-07-10T04:30:22.619Z",
       "empleadoId": null,
       "empleadoNombre": "Lucas",
       "cerradoMozo": true,
       "cerrado": true,
-      "cierreId": "cie-1783657693993",
-      "fechaCierre": "2026-07-10T04:28:13.993Z"
+      "cierreId": "cie-1783657822649",
+      "fechaCierre": "2026-07-10T04:30:22.649Z"
     }
   ]
 }
