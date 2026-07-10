@@ -40,7 +40,9 @@
         "salida": null
       }
     ],
-    "cargo": "Mozo"
+    "cargo": "Mozo",
+    "sueldo_base_mensual": 100000,
+    "saldo_actual_sueldo": 100000
   },
   {
     "id": "emp-bac-tm-02",
