@@ -234,7 +234,9 @@
     "numero": null,
     "horarios": "rotativos",
     "vacaciones": [],
-    "cargo": "Cocinero"
+    "cargo": "Cocinero",
+    "sueldo_base_mensual": 1000000,
+    "saldo_actual_sueldo": 1000000
   },
   {
     "id": "emp-1783461093952-707",
