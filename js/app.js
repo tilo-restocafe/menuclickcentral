@@ -633,6 +633,7 @@ function renderClosuresTable() {
         let nombreArchivo = parts[parts.length - 1];
         let turno = '-';
         
+        let fullDate = '-';
         if (parts.length >= 4) {
             anoMes = `${parts[1]}-${parts[2]}`;
             // extraer turno de 'dia-04-noche.json'
@@ -640,6 +641,7 @@ function renderClosuresTable() {
             const fileParts = filename.replace('.json', '').split('-');
             if (fileParts.length >= 3) {
                 turno = fileParts[2];
+                fullDate = `${anoMes}-${fileParts[1]}`;
             }
         }
 
@@ -647,7 +649,8 @@ function renderClosuresTable() {
             ...c,
             anoMes,
             nombreArchivo,
-            turno
+            turno,
+            fullDate
         };
     });
 
@@ -661,28 +664,112 @@ function renderClosuresTable() {
     filtered.sort((a, b) => b.path.localeCompare(a.path));
 
     if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No se encontraron cierres Z registrados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center text-muted">No se encontraron cierres Z registrados.</td></tr>`;
         return;
     }
 
     filtered.forEach(c => {
         const tr = document.createElement('tr');
+        const rowId = 'row-' + c.sha;
+        tr.id = rowId;
+        // Orden exacto de las columnas:
+        // 1. Fecha/Hora, 2. Turno, 3. Débito, 4. Crédito, 5. QR, 6. Gastos/Ext., 7. Vales, 8. Efectivo, 9. Total Venta, 10. Acción
         tr.innerHTML = `
-            <td><span class="text-highlight">${c.anoMes}</span></td>
-            <td><code>${c.nombreArchivo}</code></td>
+            <td id="fecha-${c.sha}"><span class="text-highlight">${c.fullDate}</span></td>
             <td><span class="badge">${c.turno.toUpperCase()}</span></td>
-            <td><small class="text-muted">${c.sha.slice(0, 8)}...</small></td>
+            <td id="deb-${c.sha}">-</td>
+            <td id="cred-${c.sha}">-</td>
+            <td id="qr-${c.sha}">-</td>
+            <td id="gastos-${c.sha}">-</td>
+            <td id="vales-${c.sha}">-</td>
+            <td id="efec-${c.sha}"><span class="spinner" style="width:12px; height:12px; border-width:2px;"></span></td>
+            <td id="total-${c.sha}">-</td>
             <td>
                 <button class="btn btn-secondary btn-xs btn-cierre-view" data-path="${c.path}">🔍 Inspeccionar</button>
+                <button class="btn btn-primary btn-xs btn-cierre-consolidar" data-date="${c.fullDate}">📅 Consolidar Día</button>
             </td>
         `;
         tbody.appendChild(tr);
+
+        // Fetch asíncrono para llenar los datos
+        fetch('/api/cierres/detalle?path=' + encodeURIComponent(c.path))
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.data) {
+                    const ds = data.data.datos_sistema || {};
+                    const cr = data.data.conteo_real || {};
+                    const closure = data.data;
+                    
+                    // Parsear Hora desde el ID (cie-[timestamp])
+                    let horaStr = '';
+                    if (closure.id && closure.id.startsWith('cie-')) {
+                        const ts = parseInt(closure.id.replace('cie-', ''));
+                        if (!isNaN(ts)) {
+                            const d = new Date(ts);
+                            const hh = String(d.getHours()).padStart(2, '0');
+                            const mm = String(d.getMinutes()).padStart(2, '0');
+                            horaStr = ` ${hh}:${mm}`;
+                        }
+                    }
+
+                    const elFecha = document.getElementById(`fecha-${c.sha}`);
+                    const elDeb = document.getElementById(`deb-${c.sha}`);
+                    const elCred = document.getElementById(`cred-${c.sha}`);
+                    const elQr = document.getElementById(`qr-${c.sha}`);
+                    const elGastos = document.getElementById(`gastos-${c.sha}`);
+                    const elVales = document.getElementById(`vales-${c.sha}`);
+                    const elEfec = document.getElementById(`efec-${c.sha}`);
+                    const elTotal = document.getElementById(`total-${c.sha}`);
+                    
+                    if (elFecha) {
+                        elFecha.innerHTML = `<span class="text-highlight">${c.fullDate}${horaStr}</span>`;
+                    }
+                    if (elDeb) elDeb.innerText = '$' + parseFloat(ds.tarjeta_debito || 0).toLocaleString('es-AR', {minimumFractionDigits: 0});
+                    if (elCred) elCred.innerText = '$' + parseFloat(ds.tarjeta_credito || 0).toLocaleString('es-AR', {minimumFractionDigits: 0});
+                    if (elQr) elQr.innerText = '$' + parseFloat(ds.qr_digital || 0).toLocaleString('es-AR', {minimumFractionDigits: 0});
+                    
+                    if (elGastos) {
+                        const valGastos = parseFloat(ds.gastos || 0);
+                        elGastos.innerHTML = valGastos > 0 ? `<span class="danger">$${valGastos.toLocaleString('es-AR', {minimumFractionDigits: 0})}</span>` : '-';
+                    }
+                    if (elVales) {
+                        const valVales = parseFloat(ds.vales_deducidos || 0);
+                        elVales.innerHTML = valVales > 0 ? `<span class="danger">$${valVales.toLocaleString('es-AR', {minimumFractionDigits: 0})}</span>` : '-';
+                    }
+                    if (elEfec) {
+                        const fisico = parseFloat(cr.efectivo_fisico || 0);
+                        const dif = parseFloat(cr.diferencia || 0);
+                        let col = '#2ecc71';
+                        if (dif < 0) col = '#e74c3c';
+                        if (dif > 0) col = '#f1c40f';
+                        elEfec.innerHTML = `<strong style="color:${col}">$${fisico.toLocaleString('es-AR', {minimumFractionDigits: 0})}</strong>`;
+                    }
+                    if (elTotal) {
+                        const totalVenta = parseFloat(ds.ventas_totales || 0);
+                        elTotal.innerHTML = `<strong>$${totalVenta.toLocaleString('es-AR', {minimumFractionDigits: 0})}</strong>`;
+                    }
+                } else {
+                    const elEfec = document.getElementById(`efec-${c.sha}`);
+                    if (elEfec) elEfec.innerHTML = '<span class="text-muted">Error</span>';
+                }
+            })
+            .catch(err => {
+                const elEfec = document.getElementById(`efec-${c.sha}`);
+                if (elEfec) elEfec.innerHTML = '<span class="text-muted">Error</span>';
+            });
     });
 
     tbody.querySelectorAll('.btn-cierre-view').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const path = e.currentTarget.getAttribute('data-path');
             openCierreDetails(path);
+        });
+    });
+
+    tbody.querySelectorAll('.btn-cierre-consolidar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const date = e.currentTarget.getAttribute('data-date');
+            consolidarDia(date);
         });
     });
 }
@@ -789,28 +876,26 @@ async function openCierreDetails(path) {
 
             container.innerHTML = `
                 <div class="cierre-details-view">
-                    <!-- Fila General -->
+                    <!-- Planilla Resumen -->
                     <div class="cierre-group" style="grid-column: 1/-1;">
-                        <h4>Información General</h4>
+                        <h4>Planilla Resumen (Cierre de Caja)</h4>
                         <div class="form-row">
-                            <div class="cierre-row"><span class="lbl">ID Reporte:</span><span class="val"><code>${cierre.id}</code></span></div>
                             <div class="cierre-row"><span class="lbl">Fecha:</span><span class="val"><strong>${cierre.fecha_jornada}</strong></span></div>
-                        </div>
-                        <div class="form-row">
                             <div class="cierre-row"><span class="lbl">Turno:</span><span class="val"><span class="badge">${cierre.turno.toUpperCase()}</span></span></div>
                             <div class="cierre-row"><span class="lbl">Responsable:</span><span class="val">${cierre.responsable_caja}</span></div>
                         </div>
-                    </div>
-
-                    <!-- Datos del Sistema -->
-                    <div class="cierre-group">
-                        <h4>Monto Teóricos (Sistema POS)</h4>
-                        <div class="cierre-row"><span class="lbl">Ventas Totales:</span><span class="val">$${ventas.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
+                        <hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">
+                        <div class="cierre-row"><span class="lbl">Total de Venta:</span><span class="val">$${ventas.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
                         <div class="cierre-row"><span class="lbl">Débito:</span><span class="val">$${debito.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
                         <div class="cierre-row"><span class="lbl">Crédito:</span><span class="val">$${credito.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
-                        <div class="cierre-row"><span class="lbl">QR Digital:</span><span class="val">$${qr.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
-                        <div class="cierre-row"><span class="lbl">Gastos en Caja:</span><span class="val" class="danger">$${gastos.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
-                        <div class="cierre-row"><span class="lbl">Vales Deducidos:</span><span class="val" class="danger">$${valesDeducidos.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
+                        <div class="cierre-row"><span class="lbl">QR / MercadoPago:</span><span class="val">$${qr.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
+                        <div class="cierre-row"><span class="lbl">Vales Deducidos:</span><span class="val danger">$${valesDeducidos.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
+                        <div class="cierre-row"><span class="lbl">Gastos en Caja:</span><span class="val danger">$${gastos.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span></div>
+                        
+                        <div class="cierre-row" style="background: rgba(46, 204, 113, 0.15); padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid rgba(46, 204, 113, 0.3);">
+                            <span class="lbl" style="font-weight: bold; color: #2ecc71; font-size: 1.1rem;">TOTAL EN EFECTIVO (Venta - Tarjetas - QR):</span>
+                            <span class="val" style="font-weight: bold; color: #2ecc71; font-size: 1.3rem;">$${(ventas - debito - credito - qr).toLocaleString('es-AR', {minimumFractionDigits: 2})}</span>
+                        </div>
                     </div>
 
                     <!-- Arqueo Real -->
@@ -1065,4 +1150,123 @@ function recalcularTotalValesWizard() {
     });
 
     document.getElementById('nc-vales-total').value = total.toFixed(2);
+}
+
+// ----------------------------------------------------
+// CONSOLIDACION DIARIA
+// ----------------------------------------------------
+document.getElementById('close-consolidado').addEventListener('click', () => {
+    document.getElementById('modal-consolidado').classList.remove('active');
+});
+
+async function consolidarDia(dateStr) {
+    if (!dateStr || dateStr === '-') return alert('Fecha inválida.');
+    const [year, month, day] = dateStr.split('-');
+    const dayStr = 'dia-' + day;
+    
+    // Encontrar cierres que coincidan con el año/mes/dia
+    const targetClosures = state.closures.filter(c => c.path.includes('/' + year + '/' + month + '/' + dayStr + '-'));
+    
+    if (targetClosures.length === 0) {
+        return alert('No hay cierres para este día.');
+    }
+
+    const modal = document.getElementById('modal-consolidado');
+    const container = document.getElementById('consolidado-content');
+    const title = document.getElementById('consolidado-title');
+    
+    title.innerText = 'Reporte Consolidado del Día: ' + dateStr;
+    container.innerHTML = '<div class="text-center" style="padding:2rem;">Cargando cierres... <div class="spinner"></div></div>';
+    modal.classList.add('active');
+
+    try {
+        let totalVentas = 0;
+        let totalTeorico = 0;
+        let totalDebito = 0;
+        let totalCredito = 0;
+        let totalQr = 0;
+        let totalGastos = 0;
+        let totalValesDeducidos = 0;
+        let totalCajaNeta = 0;
+        let totalFisico = 0;
+        let totalDiferencia = 0;
+        let allVales = [];
+        
+        let reportesLeidos = 0;
+
+        for (const c of targetClosures) {
+            const res = await fetch('/api/cierres/detalle?path=' + encodeURIComponent(c.path));
+            const data = await res.json();
+            if (data.success && data.data) {
+                const cierre = data.data;
+                const ds = cierre.datos_sistema || {};
+                const cr = cierre.conteo_real || {};
+                const vales = cierre.vales_detallados || [];
+
+                totalVentas += parseFloat(ds.ventas_totales || 0);
+                totalTeorico += parseFloat(ds.efectivo_teorico || 0);
+                totalDebito += parseFloat(ds.tarjeta_debito || 0);
+                totalCredito += parseFloat(ds.tarjeta_credito || 0);
+                totalQr += parseFloat(ds.qr_digital || 0);
+                totalGastos += parseFloat(ds.gastos || 0);
+                totalValesDeducidos += parseFloat(ds.vales_deducidos || 0);
+                totalCajaNeta += parseFloat(ds.caja_neta_teorica || 0);
+                totalFisico += parseFloat(cr.efectivo_fisico || 0);
+                totalDiferencia += parseFloat(cr.diferencia || 0);
+                
+                vales.forEach(v => {
+                    v.turno = cierre.turno || '?';
+                    allVales.push(v);
+                });
+                
+                reportesLeidos++;
+            }
+        }
+        
+        if (reportesLeidos === 0) {
+            container.innerHTML = '<div class="danger text-center">No se pudo leer el contenido de los cierres.</div>';
+            return;
+        }
+
+        let diffClass = 'text-muted';
+        if (totalDiferencia < 0) diffClass = 'danger';
+        else if (totalDiferencia > 0) diffClass = 'warning';
+
+        let valesHtml = '';
+        if (allVales.length === 0) {
+            valesHtml = '<p class="text-muted text-center" style="font-size: 0.85rem; padding: 1rem 0;">No se registraron vales en este día.</p>';
+        } else {
+            valesHtml = '<div class="table-container"><table><thead><tr><th>Turno</th><th>Empleado</th><th>Detalle</th><th>Importe</th></tr></thead><tbody>' + 
+                allVales.map(v => '<tr><td><span class="badge">' + v.turno.toUpperCase() + '</span></td><td><strong>' + v.empleadoNombre + '</strong></td><td>' + v.detalle + '</td><td class="danger">$' + parseFloat(v.monto).toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</td></tr>').join('') + 
+                '</tbody></table></div>';
+        }
+
+        container.innerHTML = '<div class="cierre-details-view">' +
+                '<div class="cierre-group" style="grid-column: 1/-1;">' +
+                '<h4>Planilla Resumen Consolidada (' + reportesLeidos + ' cierres)</h4>' +
+                '<div class="form-row">' +
+                '<div class="cierre-row"><span class="lbl">Fecha:</span><span class="val"><strong>' + dateStr + '</strong></span></div>' +
+                '<div class="cierre-row"><span class="lbl">Turno:</span><span class="val"><span class="badge">CONSOLIDADO</span></span></div>' +
+                '</div>' +
+                '<hr style="border-color: rgba(255,255,255,0.1); margin: 10px 0;">' +
+                '<div class="cierre-row"><span class="lbl">Total de Venta:</span><span class="val">$' + totalVentas.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row"><span class="lbl">Débito:</span><span class="val">$' + totalDebito.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row"><span class="lbl">Crédito:</span><span class="val">$' + totalCredito.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row"><span class="lbl">QR / MercadoPago:</span><span class="val">$' + totalQr.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row"><span class="lbl">Vales Totales:</span><span class="val danger">$' + totalValesDeducidos.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row"><span class="lbl">Gastos Totales:</span><span class="val danger">$' + totalGastos.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="cierre-row" style="background: rgba(46, 204, 113, 0.15); padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid rgba(46, 204, 113, 0.3);">' +
+                '<span class="lbl" style="font-weight: bold; color: #2ecc71; font-size: 1.1rem;">TOTAL EN EFECTIVO (Venta - Tarjetas - QR):</span>' +
+                '<span class="val" style="font-weight: bold; color: #2ecc71; font-size: 1.3rem;">$' + (totalVentas - totalDebito - totalCredito - totalQr).toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span>' +
+                '</div></div>' +
+                '<div class="cierre-group" style="grid-column: 1/-1;"><h4>Detalle de Todos los Vales del Día</h4>' + valesHtml + '</div>' +
+                '<div class="cierre-totals">' +
+                '<div class="total-pill accent-pill"><span class="lbl">Caja Neta Teórica Día</span><span class="val">$' + totalCajaNeta.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="total-pill"><span class="lbl">Efectivo Físico Total</span><span class="val">$' + totalFisico.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '<div class="total-pill"><span class="lbl">Diferencia Acumulada</span><span class="val ' + diffClass + '">$' + totalDiferencia.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
+                '</div></div>';
+
+    } catch (e) {
+        container.innerHTML = '<div class="danger text-center">Error al consolidar: ' + e.message + '</div>';
+    }
 }
