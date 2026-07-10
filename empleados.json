@@ -37,12 +37,15 @@
       {
         "fecha": "2026-07-09",
         "entrada": "01:30:08",
+        "salida": "01:57:43"
+      },
+      {
+        "fecha": "2026-07-10",
+        "entrada": "01:57:50",
         "salida": null
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 100000,
-    "saldo_actual_sueldo": 100000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-bac-tm-02",
@@ -77,12 +80,15 @@
       {
         "fecha": "2026-07-09",
         "entrada": "01:30:33",
+        "salida": "01:57:55"
+      },
+      {
+        "fecha": "2026-07-10",
+        "entrada": "01:57:58",
         "salida": null
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-caf-tm-03",
@@ -100,9 +106,7 @@
         "salida": "15:10:00"
       }
     ],
-    "cargo": "Cafetero",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Cafetero"
   },
   {
     "id": "emp-moz-tm-04",
@@ -120,9 +124,7 @@
         "salida": "15:15:00"
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-coc-tt-05",
@@ -140,9 +142,7 @@
         "salida": null
       }
     ],
-    "cargo": "Cajero",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Cajero"
   },
   {
     "id": "emp-bac-tt-06",
@@ -165,9 +165,7 @@
         "salida": null
       }
     ],
-    "cargo": "Cafetero",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Cafetero"
   },
   {
     "id": "emp-caf-tt-07",
@@ -190,9 +188,7 @@
         "salida": "01:28:51"
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-moz-tt-08",
@@ -220,9 +216,7 @@
         "salida": "04:39:00"
       }
     ],
-    "cargo": "Mozo",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Mozo"
   },
   {
     "id": "emp-1782711979171-937",
@@ -240,9 +234,7 @@
     "numero": null,
     "horarios": "rotativos",
     "vacaciones": [],
-    "cargo": "Cocinero",
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "cargo": "Cocinero"
   },
   {
     "id": "emp-1783461093952-707",
@@ -254,9 +246,7 @@
     "numero": null,
     "horarios": "",
     "cargo": "Cafetero",
-    "vacaciones": [],
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "vacaciones": []
   },
   {
     "id": "emp-1783485947014-402",
@@ -268,8 +258,6 @@
     "numero": null,
     "horarios": "",
     "cargo": "Cajero",
-    "vacaciones": [],
-    "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "vacaciones": []
   }
 ]
