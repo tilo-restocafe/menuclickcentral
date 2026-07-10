@@ -59,7 +59,8 @@
 
         const options = {
             method: method,
-            headers: headers
+            headers: headers,
+            cache: 'no-store'
         };
 
         if (bodyContent) {
