@@ -258,6 +258,8 @@
     "numero": null,
     "horarios": "",
     "cargo": "Cajero",
-    "vacaciones": []
+    "vacaciones": [],
+    "sueldo_base_mensual": 100000,
+    "saldo_actual_sueldo": 100000
   }
 ]
