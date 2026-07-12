@@ -47,7 +47,11 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-bac-tm-02",
@@ -92,7 +96,11 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-caf-tm-03",
@@ -112,7 +120,11 @@
     ],
     "cargo": "Cafetero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-moz-tm-04",
@@ -132,7 +144,11 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-coc-tt-05",
@@ -152,33 +168,43 @@
     ],
     "cargo": "Cajero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 933000,
-    "vales_acumulados_mes": 67000,
-    "historial_vales": [
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [
       {
-        "id_vale": "mov-1783833825605",
-        "fecha": "2026-07-12",
-        "hora": "02:23:45",
-        "concepto": "Vale Gabriela Grill (TT): vale",
-        "monto": 5000,
-        "cierre_caja_origen_id": "cie-1783833991901"
-      },
-      {
-        "id_vale": "mov-1783832992604",
-        "fecha": "2026-07-12",
-        "concepto": "Vale Gabriela Grill (TT): vale",
-        "monto": 2000,
-        "cierre_caja_origen_id": "cie-1783833152549"
-      },
-      {
-        "id_vale": "mov-1783870106659",
-        "fecha": "2026-07-12",
-        "hora": "12:28:26",
-        "concepto": "Vale Gabriela Grill (TT): vale",
-        "monto": 60000,
-        "cierre_caja_origen_id": "cie-1783870331644"
+        "fecha_cierre": "2026-07-12",
+        "sueldo_base": 1000000,
+        "total_vales_deducidos": 67000,
+        "neto_pagado": 933000,
+        "vales_detallados": [
+          {
+            "id_vale": "mov-1783833825605",
+            "fecha": "2026-07-12",
+            "hora": "02:23:45",
+            "concepto": "Vale Gabriela Grill (TT): vale",
+            "monto": 5000,
+            "cierre_caja_origen_id": "cie-1783833991901"
+          },
+          {
+            "id_vale": "mov-1783832992604",
+            "fecha": "2026-07-12",
+            "concepto": "Vale Gabriela Grill (TT): vale",
+            "monto": 2000,
+            "cierre_caja_origen_id": "cie-1783833152549"
+          },
+          {
+            "id_vale": "mov-1783870106659",
+            "fecha": "2026-07-12",
+            "hora": "12:28:26",
+            "concepto": "Vale Gabriela Grill (TT): vale",
+            "monto": 60000,
+            "cierre_caja_origen_id": "cie-1783870331644"
+          }
+        ]
       }
-    ]
+    ],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-bac-tt-06",
@@ -203,33 +229,43 @@
     ],
     "cargo": "Cafetero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 979000,
-    "vales_acumulados_mes": 21000,
-    "historial_vales": [
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [
       {
-        "id_vale": "mov-1783833770089",
-        "fecha": "2026-07-12",
-        "hora": "02:22:50",
-        "concepto": "Vale Silvia Sapon (TT): vale",
-        "monto": 10000,
-        "cierre_caja_origen_id": "cie-1783833991901"
-      },
-      {
-        "id_vale": "mov-1783832975232",
-        "fecha": "2026-07-12",
-        "concepto": "Vale Silvia Sapon (TT): vale",
-        "monto": 5000,
-        "cierre_caja_origen_id": "cie-1783833152549"
-      },
-      {
-        "id_vale": "mov-1783870060568",
-        "fecha": "2026-07-12",
-        "hora": "12:27:40",
-        "concepto": "Vale Silvia Sapon (TT): vale",
-        "monto": 6000,
-        "cierre_caja_origen_id": "cie-1783870331644"
+        "fecha_cierre": "2026-07-12",
+        "sueldo_base": 1000000,
+        "total_vales_deducidos": 21000,
+        "neto_pagado": 979000,
+        "vales_detallados": [
+          {
+            "id_vale": "mov-1783833770089",
+            "fecha": "2026-07-12",
+            "hora": "02:22:50",
+            "concepto": "Vale Silvia Sapon (TT): vale",
+            "monto": 10000,
+            "cierre_caja_origen_id": "cie-1783833991901"
+          },
+          {
+            "id_vale": "mov-1783832975232",
+            "fecha": "2026-07-12",
+            "concepto": "Vale Silvia Sapon (TT): vale",
+            "monto": 5000,
+            "cierre_caja_origen_id": "cie-1783833152549"
+          },
+          {
+            "id_vale": "mov-1783870060568",
+            "fecha": "2026-07-12",
+            "hora": "12:27:40",
+            "concepto": "Vale Silvia Sapon (TT): vale",
+            "monto": 6000,
+            "cierre_caja_origen_id": "cie-1783870331644"
+          }
+        ]
       }
-    ]
+    ],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-caf-tt-07",
@@ -254,7 +290,11 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-moz-tt-08",
@@ -284,7 +324,11 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-1782711979171-937",
@@ -304,7 +348,11 @@
     "vacaciones": [],
     "cargo": "Cocinero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-1783461093952-707",
@@ -318,18 +366,28 @@
     "cargo": "Cafetero",
     "vacaciones": [],
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 950000,
-    "vales_acumulados_mes": 50000,
-    "historial_vales": [
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [
       {
-        "id_vale": "mov-1783837112580",
-        "fecha": "2026-07-12",
-        "hora": "03:18:32",
-        "concepto": "Vale carlos tM: vale",
-        "monto": 50000,
-        "cierre_caja_origen_id": "cie-1783837204912"
+        "fecha_cierre": "2026-07-12",
+        "sueldo_base": 1000000,
+        "total_vales_deducidos": 50000,
+        "neto_pagado": 950000,
+        "vales_detallados": [
+          {
+            "id_vale": "mov-1783837112580",
+            "fecha": "2026-07-12",
+            "hora": "03:18:32",
+            "concepto": "Vale carlos tM: vale",
+            "monto": 50000,
+            "cierre_caja_origen_id": "cie-1783837204912"
+          }
+        ]
       }
-    ]
+    ],
+    "ultimo_cierre_mes": "2026-07-12"
   },
   {
     "id": "emp-1783485947014-402",
@@ -343,6 +401,10 @@
     "cargo": "Cajero",
     "vacaciones": [],
     "sueldo_base_mensual": 100000,
-    "saldo_actual_sueldo": 100000
+    "saldo_actual_sueldo": 100000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [],
+    "ultimo_cierre_mes": "2026-07-12"
   }
 ]
