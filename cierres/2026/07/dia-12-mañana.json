@@ -1,10 +1,10 @@
 {
-  "id": "cie-1783833152549",
+  "id": "cie-1783837204912",
   "fecha_jornada": "2026-07-12",
   "turno": "mañana",
-  "responsable_caja": "juan tm",
+  "responsable_caja": "Gabriela Grill (TT)",
   "datos_sistema": {
-    "efectivo_teorico": 169400,
+    "efectivo_teorico": 237500,
     "tarjeta_debito": 0,
     "tarjeta_credito": 0,
     "qr_digital": 0
@@ -14,28 +14,16 @@
   },
   "vales_detallados": [
     {
-      "id": "mov-1783832975232",
+      "id": "mov-1783837112580",
       "tipo": "vale",
-      "detalle": "Vale Silvia Sapon (TT): vale",
-      "monto": 5000,
-      "fecha": "2026-07-12T05:09:35.232Z",
-      "empleadoId": "emp-bac-tt-06",
-      "empleadoNombre": "Silvia Sapon (TT)",
+      "detalle": "Vale carlos tM: vale",
+      "monto": 50000,
+      "fecha": "2026-07-12T06:18:32.580Z",
+      "empleadoId": "emp-1783461093952-707",
+      "empleadoNombre": "carlos tM",
       "cerrado": true,
-      "cierreId": "cie-1783833152549",
-      "fechaCierre": "2026-07-12T05:12:32.549Z"
-    },
-    {
-      "id": "mov-1783832992604",
-      "tipo": "vale",
-      "detalle": "Vale Gabriela Grill (TT): vale",
-      "monto": 2000,
-      "fecha": "2026-07-12T05:09:52.604Z",
-      "empleadoId": "emp-coc-tt-05",
-      "empleadoNombre": "Gabriela Grill (TT)",
-      "cerrado": true,
-      "cierreId": "cie-1783833152549",
-      "fechaCierre": "2026-07-12T05:12:32.549Z"
+      "cierreId": "cie-1783837204912",
+      "fechaCierre": "2026-07-12T06:20:04.912Z"
     }
   ]
 }
