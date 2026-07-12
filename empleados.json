@@ -152,8 +152,8 @@
     ],
     "cargo": "Cajero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 995000,
-    "vales_acumulados_mes": 5000,
+    "saldo_actual_sueldo": 993000,
+    "vales_acumulados_mes": 7000,
     "historial_vales": [
       {
         "id_vale": "mov-1783833825605",
@@ -162,6 +162,13 @@
         "concepto": "Vale Gabriela Grill (TT): vale",
         "monto": 5000,
         "cierre_caja_origen_id": "cie-1783833991901"
+      },
+      {
+        "id_vale": "mov-1783832992604",
+        "fecha": "2026-07-12",
+        "concepto": "Vale Gabriela Grill (TT): vale",
+        "monto": 2000,
+        "cierre_caja_origen_id": "cie-1783833152549"
       }
     ]
   },
@@ -188,8 +195,8 @@
     ],
     "cargo": "Cafetero",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 990000,
-    "vales_acumulados_mes": 10000,
+    "saldo_actual_sueldo": 985000,
+    "vales_acumulados_mes": 15000,
     "historial_vales": [
       {
         "id_vale": "mov-1783833770089",
@@ -198,6 +205,13 @@
         "concepto": "Vale Silvia Sapon (TT): vale",
         "monto": 10000,
         "cierre_caja_origen_id": "cie-1783833991901"
+      },
+      {
+        "id_vale": "mov-1783832975232",
+        "fecha": "2026-07-12",
+        "concepto": "Vale Silvia Sapon (TT): vale",
+        "monto": 5000,
+        "cierre_caja_origen_id": "cie-1783833152549"
       }
     ]
   },
