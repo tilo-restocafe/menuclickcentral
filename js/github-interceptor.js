@@ -78,7 +78,7 @@
     }
 
     // Guardar fetch original
-    window.originalFetch = window.fetch;
+    window.originalFetch = window.fetch.bind(window);
 
     // Sobreescribir fetch global
     window.fetch = async function(url, options = {}) {
