@@ -1283,9 +1283,13 @@ function recalcularTotalValesWizard() {
 // ----------------------------------------------------
 // CONSOLIDACION DIARIA
 // ----------------------------------------------------
-document.getElementById('close-consolidado').addEventListener('click', () => {
-    document.getElementById('modal-consolidado').classList.remove('active');
-});
+const closeConsolidadoBtn = document.getElementById('close-consolidado');
+if (closeConsolidadoBtn) {
+    closeConsolidadoBtn.addEventListener('click', () => {
+        const mod = document.getElementById('modal-consolidado');
+        if (mod) mod.classList.remove('active');
+    });
+}
 
 async function consolidarDia(dateStr) {
     if (!dateStr || dateStr === '-') return alert('Fecha inválida.');
@@ -1394,7 +1398,3 @@ async function consolidarDia(dateStr) {
                 '<div class="total-pill"><span class="lbl">Diferencia Acumulada</span><span class="val ' + diffClass + '">$' + totalDiferencia.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
                 '</div></div>';
 
-    } catch (e) {
-        container.innerHTML = '<div class="danger text-center">Error al consolidar: ' + e.message + '</div>';
-    }
-}
