@@ -1,0 +1,22 @@
+{
+  "id": "cie-1783878574576",
+  "fecha_jornada": "2026-07-12",
+  "turno": "mañana",
+  "responsable_caja": "2 Bruno  (TM)",
+  "datos_sistema": {
+    "ventas_totales": 105200,
+    "efectivo_teorico": 105200,
+    "tarjeta_debito": 0,
+    "tarjeta_credito": 0,
+    "qr_digital": 0,
+    "gastos": 0,
+    "vales_deducidos": 0,
+    "caja_neta_teorica": 105200
+  },
+  "conteo_real": {
+    "efectivo_fisico": 0,
+    "diferencia": -55200,
+    "notas": ""
+  },
+  "vales_detallados": []
+}
