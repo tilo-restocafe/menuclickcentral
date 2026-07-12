@@ -288,7 +288,18 @@
     "cargo": "Cafetero",
     "vacaciones": [],
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000
+    "saldo_actual_sueldo": 950000,
+    "vales_acumulados_mes": 50000,
+    "historial_vales": [
+      {
+        "id_vale": "mov-1783837112580",
+        "fecha": "2026-07-12",
+        "hora": "03:18:32",
+        "concepto": "Vale carlos tM: vale",
+        "monto": 50000,
+        "cierre_caja_origen_id": "cie-1783837204912"
+      }
+    ]
   },
   {
     "id": "emp-1783485947014-402",
