@@ -47,9 +47,18 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 1000000,
-    "vales_acumulados_mes": 0,
-    "historial_vales": [],
+    "saldo_actual_sueldo": 950000,
+    "vales_acumulados_mes": 50000,
+    "historial_vales": [
+      {
+        "id_vale": "mov-1783886968964",
+        "fecha": "2026-07-12",
+        "hora": "17:09:28",
+        "concepto": "Vale 1 Carlos (TM): vale",
+        "monto": 50000,
+        "cierre_caja_origen_id": "cie-1783888091498"
+      }
+    ],
     "historial_cierre_meses": [],
     "ultimo_cierre_mes": "2026-07-12"
   },
