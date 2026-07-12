@@ -365,6 +365,22 @@ function setupEmployeeForm() {
         syncEmpBtn.disabled = false;
     });
 
+    const cierreMesBtn = document.getElementById('btn-cierre-mes-general');
+    if (cierreMesBtn) {
+        cierreMesBtn.addEventListener('click', async () => {
+            await cierreDeMesGeneral();
+        });
+    }
+
+    const liquidarEmpBtn = document.getElementById('btn-liquidar-empleado');
+    if (liquidarEmpBtn) {
+        liquidarEmpBtn.addEventListener('click', async () => {
+            if (state.activeEmployee) {
+                await liquidarEmpleadoIndividual(state.activeEmployee.id);
+            }
+        });
+    }
+
     // Enviar formulario (Agregar / Editar Empleado)
     employeeForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -594,6 +610,121 @@ async function anularValeEmpleado(empId, valeId) {
     }
 }
 
+// FUNCIONES: Cierre de Mes General y Liquidación Individual de Sueldo
+async function cierreDeMesGeneral() {
+    if (!state.employees || state.employees.length === 0) {
+        alert("No hay empleados registrados en la nómina.");
+        return;
+    }
+
+    const confirmMsg = `¿Confirmas el CIERRE DE MES GENERAL para todos los empleados?
+
+Se realizará lo siguiente:
+1. Se archivará el historial de vales del mes en registros pasados.
+2. Se reiniciarán a $0 los Vales Acumulados de todos los empleados (vales_acumulados_mes = 0).
+3. Se restaurará el Saldo Neto al Sueldo Base mensual de cada empleado.`;
+
+    if (!confirm(confirmMsg)) return;
+
+    const btn = document.getElementById('btn-cierre-mes-general');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = '⏳ Procesando Cierre...';
+    }
+
+    const fechaCierre = new Date().toISOString().split('T')[0];
+    const updatedList = state.employees.map(emp => {
+        const sueldoBase = parseFloat(emp.sueldo_base_mensual || 0);
+        const valesMes = parseFloat(emp.vales_acumulados_mes || 0);
+        const historialActual = emp.historial_vales || [];
+        const historicoMeses = emp.historial_cierre_meses || [];
+
+        if (valesMes > 0 || historialActual.length > 0) {
+            historicoMeses.push({
+                fecha_cierre: fechaCierre,
+                sueldo_base: sueldoBase,
+                total_vales_deducidos: valesMes,
+                neto_pagado: sueldoBase - valesMes,
+                vales_detallados: historialActual
+            });
+        }
+
+        return {
+            ...emp,
+            vales_acumulados_mes: 0,
+            saldo_actual_sueldo: sueldoBase,
+            historial_vales: [],
+            historial_cierre_meses: historicoMeses,
+            ultimo_cierre_mes: fechaCierre
+        };
+    });
+
+    const success = await saveEmployeesToGitHub(updatedList);
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '🗓️ Cierre de Mes (Reiniciar Vales)';
+    }
+
+    if (success) {
+        state.employees = updatedList;
+        renderEmployeesTable();
+        alert("✅ ¡Cierre de Mes completado con éxito! Todos los vales se han reiniciado a $0 y los sueldos se restauraron al sueldo base.");
+    }
+}
+
+async function liquidarEmpleadoIndividual(empId) {
+    const emp = state.employees.find(x => String(x.id) === String(empId));
+    if (!emp) return;
+
+    const sueldoBase = parseFloat(emp.sueldo_base_mensual || 0);
+    const valesMes = parseFloat(emp.vales_acumulados_mes || 0);
+    const netoAbonar = sueldoBase - valesMes;
+
+    const confirmMsg = `¿Confirmas la LIQUIDACIÓN DE SUELDO para ${emp.nombre}?
+
+- Sueldo Base: $${sueldoBase.toLocaleString('es-AR', {minimumFractionDigits: 2})}
+- Vales Deducidos en el mes: $${valesMes.toLocaleString('es-AR', {minimumFractionDigits: 2})}
+- Saldo Neto a abonar: $${netoAbonar.toLocaleString('es-AR', {minimumFractionDigits: 2})}
+
+Sus vales del mes se reiniciarán a $0 y su saldo se restaurará al sueldo base.`;
+
+    if (!confirm(confirmMsg)) return;
+
+    const fechaCierre = new Date().toISOString().split('T')[0];
+    const updatedList = state.employees.map(x => {
+        if (String(x.id) === String(emp.id)) {
+            const historialActual = x.historial_vales || [];
+            const historicoMeses = x.historial_cierre_meses || [];
+            if (valesMes > 0 || historialActual.length > 0) {
+                historicoMeses.push({
+                    fecha_cierre: fechaCierre,
+                    sueldo_base: sueldoBase,
+                    total_vales_deducidos: valesMes,
+                    neto_pagado: netoAbonar,
+                    vales_detallados: historialActual
+                });
+            }
+            return {
+                ...x,
+                vales_acumulados_mes: 0,
+                saldo_actual_sueldo: sueldoBase,
+                historial_vales: [],
+                historial_cierre_meses: historicoMeses,
+                ultimo_cierre_mes: fechaCierre
+            };
+        }
+        return x;
+    });
+
+    const success = await saveEmployeesToGitHub(updatedList);
+    if (success) {
+        state.employees = updatedList;
+        renderEmployeesTable();
+        openEmployeeDetails(emp.id);
+        alert(`✅ Liquidación completada para ${emp.nombre}. Vales reiniciados a $0.`);
+    }
+}
+
 async function saveEmployeesToGitHub(list) {
     try {
         const response = await fetch('/api/empleados', {
@@ -738,12 +869,8 @@ function renderClosuresTable() {
                         elVales.innerHTML = valVales > 0 ? `<span class="danger">$${valVales.toLocaleString('es-AR', {minimumFractionDigits: 0})}</span>` : '-';
                     }
                     if (elEfec) {
-                        const fisico = parseFloat(cr.efectivo_fisico || 0);
-                        const dif = parseFloat(cr.diferencia || 0);
-                        let col = '#2ecc71';
-                        if (dif < 0) col = '#e74c3c';
-                        if (dif > 0) col = '#f1c40f';
-                        elEfec.innerHTML = `<strong style="color:${col}">$${fisico.toLocaleString('es-AR', {minimumFractionDigits: 0})}</strong>`;
+                        const efectivoCaja = parseFloat(ds.efectivo_teorico || 0) || Math.max(0, parseFloat(ds.ventas_totales || 0) - parseFloat(ds.tarjeta_debito || 0) - parseFloat(ds.tarjeta_credito || 0) - parseFloat(ds.qr_digital || 0));
+                        elEfec.innerHTML = `<strong style="color:#2ecc71">$${efectivoCaja.toLocaleString('es-AR', {minimumFractionDigits: 0})}</strong>`;
                     }
                     if (elTotal) {
                         const totalVenta = parseFloat(ds.ventas_totales || 0);
