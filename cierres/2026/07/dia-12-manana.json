@@ -1,22 +1,35 @@
 {
-  "id": "cie-1783878574576",
+  "id": "cie-1783888091498",
   "fecha_jornada": "2026-07-12",
   "turno": "mañana",
-  "responsable_caja": "2 Bruno  (TM)",
+  "responsable_caja": "carlos tM",
   "datos_sistema": {
-    "ventas_totales": 105200,
-    "efectivo_teorico": 55200,
+    "ventas_totales": 300700,
+    "efectivo_teorico": 250700,
     "tarjeta_debito": 20000,
-    "tarjeta_credito": 30000,
-    "qr_digital": 0,
+    "tarjeta_credito": 20000,
+    "qr_digital": 10000,
     "gastos": 0,
-    "vales_deducidos": 0,
-    "caja_neta_teorica": 55200
+    "vales_deducidos": 50000,
+    "caja_neta_teorica": 200700
   },
   "conteo_real": {
     "efectivo_fisico": 0,
-    "diferencia": -55200,
+    "diferencia": -200700,
     "notas": ""
   },
-  "vales_detallados": []
+  "vales_detallados": [
+    {
+      "id": "mov-1783886968964",
+      "tipo": "vale",
+      "detalle": "Vale 1 Carlos (TM): vale",
+      "monto": 50000,
+      "fecha": "2026-07-12T20:09:28.964Z",
+      "empleadoId": "emp-coc-tm-01",
+      "empleadoNombre": "1 Carlos (TM)",
+      "cerrado": true,
+      "cierreId": "cie-1783888091498",
+      "fechaCierre": "2026-07-12T20:28:11.498Z"
+    }
+  ]
 }
