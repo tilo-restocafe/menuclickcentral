@@ -5,13 +5,13 @@
   "responsable_caja": "2 Bruno  (TM)",
   "datos_sistema": {
     "ventas_totales": 105200,
-    "efectivo_teorico": 105200,
-    "tarjeta_debito": 0,
-    "tarjeta_credito": 0,
+    "efectivo_teorico": 55200,
+    "tarjeta_debito": 20000,
+    "tarjeta_credito": 30000,
     "qr_digital": 0,
     "gastos": 0,
     "vales_deducidos": 0,
-    "caja_neta_teorica": 105200
+    "caja_neta_teorica": 55200
   },
   "conteo_real": {
     "efectivo_fisico": 0,
