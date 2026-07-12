@@ -48,9 +48,10 @@
             throw new Error("Faltan configurar las credenciales de GitHub en la pestaña de Configuración.");
         }
 
-        const url = urlPath.startsWith('http') || urlPath.startsWith('/') ? 
-            (urlPath.startsWith('/') ? `https://api.github.com${urlPath}` : urlPath) : 
-            `https://api.github.com/repos/${user}/${repo}/contents/${urlPath}`;
+        const encodedPath = encodeURI(urlPath);
+        const url = encodedPath.startsWith('http') || encodedPath.startsWith('/') ? 
+            (encodedPath.startsWith('/') ? `https://api.github.com${encodedPath}` : encodedPath) : 
+            `https://api.github.com/repos/${user}/${repo}/contents/${encodedPath}`;
 
         const headers = {
             'Authorization': `token ${token}`,
