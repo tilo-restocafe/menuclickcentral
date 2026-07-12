@@ -211,7 +211,10 @@
                     <div class="panel glass">
                         <div class="panel-header">
                             <h3>Nómina de Personal y Vales de Caja</h3>
-                            <button class="btn btn-secondary btn-sm" id="btn-sync-empleados">Sincronizar</button>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn btn-warning btn-sm" id="btn-cierre-mes-general" title="Reiniciar vales acumulados y restaurar sueldos al terminar el mes">🗓️ Cierre de Mes (Reiniciar Vales)</button>
+                                <button class="btn btn-secondary btn-sm" id="btn-sync-empleados">Sincronizar</button>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <div class="table-container">
@@ -446,7 +449,7 @@
     </div>
 
     <!-- MODAL: DETALLE / AGREGAR VALE A EMPLEADO -->
-    <div id="modal-empleado-detalle" class="modal">
+    <div id="modal-empleado-detail" class="modal">
         <div class="modal-content modal-md glass">
             <div class="modal-header">
                 <h3 id="emp-detail-name">Detalle de Empleado</h3>
@@ -468,7 +471,11 @@
                             <span class="val success" id="emp-detail-neto">$0.00</span>
                         </div>
                     </div>
-                </div>
+                    <div style="margin-top: 12px; display: flex; justify-content: flex-end;">
+                        <button class="btn btn-warning btn-sm" id="btn-liquidar-empleado">
+                            💵 Liquidar Sueldo y Reiniciar Vales del Mes
+                        </button>
+                    </div>
 
                 <div class="employee-tabs">
                     <div class="tab-headers">
