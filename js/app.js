@@ -112,27 +112,38 @@ async function checkConfigStatus() {
         state.config = data;
         
         // Cargar inputs del formulario
-        document.getElementById('cfg-github-user').value = data.GITHUB_USER;
-        document.getElementById('cfg-github-repo').value = data.GITHUB_REPO;
-        document.getElementById('cfg-sucursal-id').value = data.COMPROC_SUCURSAL_ID;
-        document.getElementById('cfg-port').value = data.PORT;
-        document.getElementById('cfg-github-token').value = data.hasToken ? '••••••••••••••••' : '';
+        const cfgUser = document.getElementById('cfg-github-user');
+        if (cfgUser) cfgUser.value = data.GITHUB_USER || '';
+        const cfgRepo = document.getElementById('cfg-github-repo');
+        if (cfgRepo) cfgRepo.value = data.GITHUB_REPO || '';
+        const cfgSuc = document.getElementById('cfg-sucursal-id');
+        if (cfgSuc) cfgSuc.value = data.COMPROC_SUCURSAL_ID || '';
+        const cfgPort = document.getElementById('cfg-port');
+        if (cfgPort) cfgPort.value = data.PORT || '';
+        const cfgToken = document.getElementById('cfg-github-token');
+        if (cfgToken) cfgToken.value = data.hasToken ? '••••••••••••••••' : '';
 
         // Actualizar datos del panel de información lateral
-        document.getElementById('info-git-user').innerText = data.GITHUB_USER || 'Sin configurar';
-        document.getElementById('info-git-repo').innerText = data.GITHUB_REPO || 'Sin configurar';
+        const infoUser = document.getElementById('info-git-user');
+        if (infoUser) infoUser.innerText = data.GITHUB_USER || 'Sin configurar';
+        const infoRepo = document.getElementById('info-git-repo');
+        if (infoRepo) infoRepo.innerText = data.GITHUB_REPO || 'Sin configurar';
         const tokenSpan = document.getElementById('info-git-token-status');
-        if (data.hasToken) {
-            tokenSpan.innerText = `Activo (${data.tokenMasked})`;
-            tokenSpan.className = 'val success';
-        } else {
-            tokenSpan.innerText = 'Falta configurar';
-            tokenSpan.className = 'val danger';
+        if (tokenSpan) {
+            if (data.hasToken) {
+                tokenSpan.innerText = `Activo (${data.tokenMasked})`;
+                tokenSpan.className = 'val success';
+            } else {
+                tokenSpan.innerText = 'Falta configurar';
+                tokenSpan.className = 'val danger';
+            }
         }
 
         // Actualizar dashboard sucursal
-        document.getElementById('dash-sucursal-name').innerText = data.GITHUB_REPO ? `Repo: ${data.GITHUB_REPO}` : 'Sucursal';
-        document.getElementById('dash-sucursal-id').innerText = data.COMPROC_SUCURSAL_ID || 'Sin configurar';
+        const dashSucName = document.getElementById('dash-sucursal-name');
+        if (dashSucName) dashSucName.innerText = data.GITHUB_REPO ? `Repo: ${data.GITHUB_REPO}` : 'Sucursal';
+        const dashSucId = document.getElementById('dash-sucursal-id');
+        if (dashSucId) dashSucId.innerText = data.COMPROC_SUCURSAL_ID || 'Sin configurar';
 
         if (!data.GITHUB_USER || !data.GITHUB_REPO || !data.hasToken) {
             badge.className = 'status-badge disconnected';
@@ -1398,3 +1409,7 @@ async function consolidarDia(dateStr) {
                 '<div class="total-pill"><span class="lbl">Diferencia Acumulada</span><span class="val ' + diffClass + '">$' + totalDiferencia.toLocaleString('es-AR', {minimumFractionDigits: 2}) + '</span></div>' +
                 '</div></div>';
 
+    } catch (e) {
+        container.innerHTML = '<div class="danger text-center">Error al consolidar: ' + e.message + '</div>';
+    }
+}
