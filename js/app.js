@@ -22,14 +22,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupEmployeeForm();
     setupClosureForm();
     
-    // Carga inicial de datos
+    // Carga inicial de datos en todos los entornos
     await checkConfigStatus();
-    if (state.githubConnected) {
-        await loadInitialData();
-    } else {
-        // Redirigir a vista de configuración si no está conectado
-        switchView('config');
-    }
+    await loadInitialData();
 });
 
 // ===================================================================
@@ -87,10 +82,10 @@ function switchView(viewName) {
     };
     document.getElementById('view-title').innerText = viewTitles[viewName] || 'MenuClick Central';
 
-    // Cargas perezosas
-    if (viewName === 'cierres' && state.githubConnected) {
+    // Cargas dinámicas
+    if (viewName === 'cierres') {
         loadClosuresList();
-    } else if (viewName === 'empleados' && state.githubConnected) {
+    } else if (viewName === 'empleados') {
         loadEmployeesList();
     }
 }
@@ -677,43 +672,48 @@ Se realizará lo siguiente:
         btn.innerText = '⏳ Procesando Cierre...';
     }
 
-    const fechaCierre = new Date().toISOString().split('T')[0];
-    const updatedList = state.employees.map(emp => {
-        const sueldoBase = parseFloat(emp.sueldo_base_mensual || 0);
-        const valesMes = parseFloat(emp.vales_acumulados_mes || 0);
-        const historialActual = emp.historial_vales || [];
-        const historicoMeses = emp.historial_cierre_meses || [];
+    try {
+        const fechaCierre = new Date().toISOString().split('T')[0];
+        const updatedList = state.employees.map(emp => {
+            const sueldoBase = parseFloat(emp.sueldo_base_mensual || 0);
+            const valesMes = parseFloat(emp.vales_acumulados_mes || 0);
+            const historialActual = emp.historial_vales || [];
+            const historicoMeses = emp.historial_cierre_meses || [];
 
-        if (valesMes > 0 || historialActual.length > 0) {
-            historicoMeses.push({
-                fecha_cierre: fechaCierre,
-                sueldo_base: sueldoBase,
-                total_vales_deducidos: valesMes,
-                neto_pagado: sueldoBase - valesMes,
-                vales_detallados: historialActual
-            });
+            if (valesMes > 0 || historialActual.length > 0) {
+                historicoMeses.push({
+                    fecha_cierre: fechaCierre,
+                    sueldo_base: sueldoBase,
+                    total_vales_deducidos: valesMes,
+                    neto_pagado: sueldoBase - valesMes,
+                    vales_detallados: historialActual
+                });
+            }
+
+            return {
+                ...emp,
+                vales_acumulados_mes: 0,
+                saldo_actual_sueldo: sueldoBase,
+                historial_vales: [],
+                historial_cierre_meses: historicoMeses,
+                ultimo_cierre_mes: fechaCierre
+            };
+        });
+
+        const success = await saveEmployeesToGitHub(updatedList);
+        if (success) {
+            state.employees = updatedList;
+            renderEmployeesTable();
+            alert("✅ ¡Cierre de Mes completado con éxito! Todos los vales se han reiniciado a $0 y los sueldos se restauraron al sueldo base.");
         }
-
-        return {
-            ...emp,
-            vales_acumulados_mes: 0,
-            saldo_actual_sueldo: sueldoBase,
-            historial_vales: [],
-            historial_cierre_meses: historicoMeses,
-            ultimo_cierre_mes: fechaCierre
-        };
-    });
-
-    const success = await saveEmployeesToGitHub(updatedList);
-    if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = '🗓️ Cierre de Mes (Reiniciar Vales)';
-    }
-
-    if (success) {
-        state.employees = updatedList;
-        renderEmployeesTable();
-        alert("✅ ¡Cierre de Mes completado con éxito! Todos los vales se han reiniciado a $0 y los sueldos se restauraron al sueldo base.");
+    } catch(e) {
+        console.error("Error en Cierre de Mes:", e);
+        alert("Ocurrió un error al procesar el cierre: " + e.message);
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '🗓️ Cierre de Mes (Reiniciar Vales)';
+        }
     }
 }
 
