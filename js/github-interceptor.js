@@ -31,6 +31,120 @@
         if (cfg.COMPROC_SUCURSAL_ID !== undefined) localStorage.setItem('central_sucursal_id', cfg.COMPROC_SUCURSAL_ID);
     };
 
+    // DATOS DEMO / SIMULACIÓN AUTOMÁTICA (disponibles para todas las peticiones)
+    const DEMO_EMPLOYEES = [
+        {
+            id: 'emp-01',
+            nombre: 'Sofía Cajera',
+            cargo: 'Cajera Turno Mañana',
+            sueldo_base_mensual: 650000,
+            vales_acumulados_mes: 35000,
+            saldo_actual_sueldo: 615000,
+            historial_vales: [
+                { id_vale: 'val-01', fecha: '2026-07-02', hora: '14:30:00', concepto: 'Adelanto compra supermercado', monto: 20000 },
+                { id_vale: 'val-02', fecha: '2026-07-08', hora: '18:15:00', concepto: 'Adelanto fin de semana', monto: 15000 }
+            ]
+        },
+        {
+            id: 'emp-02',
+            nombre: 'Marcos González',
+            cargo: 'Jefe de Cocina / Chef',
+            sueldo_base_mensual: 820000,
+            vales_acumulados_mes: 50000,
+            saldo_actual_sueldo: 770000,
+            historial_vales: [
+                { id_vale: 'val-03', fecha: '2026-07-05', hora: '12:00:00', concepto: 'Adelanto extraordinario', monto: 50000 }
+            ]
+        },
+        {
+            id: 'emp-03',
+            nombre: 'Valentina Ríos',
+            cargo: 'Moza Salón Principal',
+            sueldo_base_mensual: 540000,
+            vales_acumulados_mes: 15000,
+            saldo_actual_sueldo: 525000,
+            historial_vales: [
+                { id_vale: 'val-04', fecha: '2026-07-10', hora: '21:00:00', concepto: 'Taxi regreso turno noche', monto: 15000 }
+            ]
+        },
+        {
+            id: 'emp-04',
+            nombre: 'Lucas Benítez',
+            cargo: 'Bartender / Barra',
+            sueldo_base_mensual: 580000,
+            vales_acumulados_mes: 0,
+            saldo_actual_sueldo: 580000,
+            historial_vales: []
+        },
+        {
+            id: 'emp-05',
+            nombre: 'Camila Duarte',
+            cargo: 'Barista / Cafetería',
+            sueldo_base_mensual: 560000,
+            vales_acumulados_mes: 45000,
+            saldo_actual_sueldo: 515000,
+            historial_vales: [
+                { id_vale: 'val-05', fecha: '2026-07-04', hora: '19:30:00', concepto: 'Adelanto quincena', monto: 45000 }
+            ]
+        }
+    ];
+
+    const DEMO_CLOSURES_LIST = [
+        { path: "cierres/2026/07/dia-12-Noche.json", sha: "demo-sha-1", size: 1200 },
+        { path: "cierres/2026/07/dia-12-Mañana.json", sha: "demo-sha-2", size: 1100 },
+        { path: "cierres/2026/07/dia-11-Noche.json", sha: "demo-sha-3", size: 1300 },
+        { path: "cierres/2026/07/dia-11-Mañana.json", sha: "demo-sha-4", size: 1150 }
+    ];
+
+    const DEMO_CLOSURES_DATA = {
+        "cierres/2026/07/dia-12-Noche.json": {
+            id: "cie-demo-01",
+            fecha_jornada: "2026-07-12",
+            turno: "Noche",
+            responsable_caja: "Sofía Cajera",
+            datos_sistema: {
+                ventas_totales: 485000,
+                efectivo_teorico: 310000,
+                tarjeta_debito: 100000,
+                tarjeta_credito: 60000,
+                qr_digital: 15000,
+                gastos: 0,
+                vales_deducidos: 15000,
+                caja_neta_teorica: 295000
+            },
+            conteo_real: {
+                efectivo_fisico: 295000,
+                diferencia: 0,
+                notas: "Caja cuadrada en turno noche."
+            },
+            vales_detallados: [
+                { id: "val-04", tipo: "vale", detalle: "Taxi regreso turno noche", monto: 15000, empleadoId: "emp-03", empleadoNombre: "Valentina Ríos" }
+            ]
+        },
+        "cierres/2026/07/dia-12-Mañana.json": {
+            id: "cie-demo-02",
+            fecha_jornada: "2026-07-12",
+            turno: "Mañana",
+            responsable_caja: "Sofía Cajera",
+            datos_sistema: {
+                ventas_totales: 320000,
+                efectivo_teorico: 200000,
+                tarjeta_debito: 80000,
+                tarjeta_credito: 40000,
+                qr_digital: 0,
+                gastos: 0,
+                vales_deducidos: 0,
+                caja_neta_teorica: 200000
+            },
+            conteo_real: {
+                efectivo_fisico: 200000,
+                diferencia: 0,
+                notas: "Turno mañana perfecto."
+            },
+            vales_detallados: []
+        }
+    };
+
     // Auxiliar: Petición a la API de GitHub utilizando fetch nativo
     async function githubRequest(method, urlPath, bodyContent = null) {
         const config = getConfig();
@@ -135,120 +249,6 @@
             }
         }
         
-        // DATOS DEMO / SIMULACIÓN AUTOMÁTICA
-        const DEMO_EMPLOYEES = [
-            {
-                id: 'emp-01',
-                nombre: 'Sofía Cajera',
-                cargo: 'Cajera Turno Mañana',
-                sueldo_base_mensual: 650000,
-                vales_acumulados_mes: 35000,
-                saldo_actual_sueldo: 615000,
-                historial_vales: [
-                    { id_vale: 'val-01', fecha: '2026-07-02', hora: '14:30:00', concepto: 'Adelanto compra supermercado', monto: 20000 },
-                    { id_vale: 'val-02', fecha: '2026-07-08', hora: '18:15:00', concepto: 'Adelanto fin de semana', monto: 15000 }
-                ]
-            },
-            {
-                id: 'emp-02',
-                nombre: 'Marcos González',
-                cargo: 'Jefe de Cocina / Chef',
-                sueldo_base_mensual: 820000,
-                vales_acumulados_mes: 50000,
-                saldo_actual_sueldo: 770000,
-                historial_vales: [
-                    { id_vale: 'val-03', fecha: '2026-07-05', hora: '12:00:00', concepto: 'Adelanto extraordinario', monto: 50000 }
-                ]
-            },
-            {
-                id: 'emp-03',
-                nombre: 'Valentina Ríos',
-                cargo: 'Moza Salón Principal',
-                sueldo_base_mensual: 540000,
-                vales_acumulados_mes: 15000,
-                saldo_actual_sueldo: 525000,
-                historial_vales: [
-                    { id_vale: 'val-04', fecha: '2026-07-10', hora: '21:00:00', concepto: 'Taxi regreso turno noche', monto: 15000 }
-                ]
-            },
-            {
-                id: 'emp-04',
-                nombre: 'Lucas Benítez',
-                cargo: 'Bartender / Barra',
-                sueldo_base_mensual: 580000,
-                vales_acumulados_mes: 0,
-                saldo_actual_sueldo: 580000,
-                historial_vales: []
-            },
-            {
-                id: 'emp-05',
-                nombre: 'Camila Duarte',
-                cargo: 'Encargada de Sucursal',
-                sueldo_base_mensual: 890000,
-                vales_acumulados_mes: 45000,
-                saldo_actual_sueldo: 845000,
-                historial_vales: [
-                    { id_vale: 'val-05', fecha: '2026-07-04', hora: '19:30:00', concepto: 'Adelanto quincena', monto: 45000 }
-                ]
-            }
-        ];
-
-        const DEMO_CLOSURES_LIST = [
-            { path: "cierres/2026/07/dia-12-Noche.json", sha: "demo-sha-1", size: 1200 },
-            { path: "cierres/2026/07/dia-12-Mañana.json", sha: "demo-sha-2", size: 1100 },
-            { path: "cierres/2026/07/dia-11-Noche.json", sha: "demo-sha-3", size: 1300 },
-            { path: "cierres/2026/07/dia-11-Mañana.json", sha: "demo-sha-4", size: 1150 }
-        ];
-
-        const DEMO_CLOSURES_DATA = {
-            "cierres/2026/07/dia-12-Noche.json": {
-                id: "cie-demo-01",
-                fecha_jornada: "2026-07-12",
-                turno: "Noche",
-                responsable_caja: "Sofía Cajera",
-                datos_sistema: {
-                    ventas_totales: 485000,
-                    efectivo_teorico: 310000,
-                    tarjeta_debito: 100000,
-                    tarjeta_credito: 60000,
-                    qr_digital: 15000,
-                    gastos: 0,
-                    vales_deducidos: 15000,
-                    caja_neta_teorica: 295000
-                },
-                conteo_real: {
-                    efectivo_fisico: 295000,
-                    diferencia: 0,
-                    notas: "Caja cuadrada en turno noche."
-                },
-                vales_detallados: [
-                    { id: "val-04", tipo: "vale", detalle: "Taxi regreso turno noche", monto: 15000, empleadoId: "emp-03", empleadoNombre: "Valentina Ríos" }
-                ]
-            },
-            "cierres/2026/07/dia-12-Mañana.json": {
-                id: "cie-demo-02",
-                fecha_jornada: "2026-07-12",
-                turno: "Mañana",
-                responsable_caja: "Sofía Cajera",
-                datos_sistema: {
-                    ventas_totales: 320000,
-                    efectivo_teorico: 200000,
-                    tarjeta_debito: 80000,
-                    tarjeta_credito: 40000,
-                    qr_digital: 0,
-                    gastos: 0,
-                    vales_deducidos: 0,
-                    caja_neta_teorica: 200000
-                },
-                conteo_real: {
-                    efectivo_fisico: 200000,
-                    diferencia: 0,
-                    notas: "Turno mañana perfecto."
-                },
-                vales_detallados: []
-            }
-        };
-
         // 4. GET & POST /api/empleados
         if (urlStr.includes('/api/empleados')) {
             const method = options.method || 'GET';
@@ -264,6 +264,7 @@
                             const decodedText = decodeURIComponent(escape(contentText));
                             let list = [];
                             try { list = JSON.parse(decodedText); } catch (e) { list = []; }
+                            if (!Array.isArray(list) || list.length === 0) list = DEMO_EMPLOYEES;
                             localStorage.setItem('central_empleados_local', JSON.stringify(list));
                             return new Response(JSON.stringify({ success: true, sha: result.body.sha, empleados: list }), { status: 200, headers: { 'Content-Type': 'application/json' } });
                         }
@@ -272,11 +273,11 @@
 
                 // Fallback a almacenamiento local o datos simulados por defecto
                 let localStr = localStorage.getItem('central_empleados_local');
-                if (!localStr) {
-                    localStorage.setItem('central_empleados_local', JSON.stringify(DEMO_EMPLOYEES));
-                    localStr = JSON.stringify(DEMO_EMPLOYEES);
+                let list = localStr ? JSON.parse(localStr) : [];
+                if (!Array.isArray(list) || list.length === 0) {
+                    list = DEMO_EMPLOYEES;
+                    localStorage.setItem('central_empleados_local', JSON.stringify(list));
                 }
-                const list = JSON.parse(localStr);
                 return new Response(JSON.stringify({ success: true, sha: null, empleados: list }), { status: 200, headers: { 'Content-Type': 'application/json' } });
             } else if (method === 'POST') {
                 const body = JSON.parse(options.body);
@@ -359,11 +360,11 @@
 
             // Fallback a cierres locales/demo
             let localClosures = localStorage.getItem('central_cierres_list');
-            if (!localClosures) {
-                localStorage.setItem('central_cierres_list', JSON.stringify(DEMO_CLOSURES_LIST));
-                localClosures = JSON.stringify(DEMO_CLOSURES_LIST);
+            let closures = localClosures ? JSON.parse(localClosures) : [];
+            if (!Array.isArray(closures) || closures.length === 0) {
+                closures = DEMO_CLOSURES_LIST;
+                localStorage.setItem('central_cierres_list', JSON.stringify(closures));
             }
-            const closures = JSON.parse(localClosures);
             return new Response(JSON.stringify({ success: true, closures }), { status: 200, headers: { 'Content-Type': 'application/json' } });
         }
         
