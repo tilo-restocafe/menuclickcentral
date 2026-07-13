@@ -282,6 +282,7 @@ async function loadEmployeesList() {
         console.error("Error cargando empleados:", e);
     }
 }
+window.loadEmployeesList = loadEmployeesList;
 
 async function loadClosuresList() {
     try {
@@ -333,8 +334,8 @@ function renderEmployeesTable() {
             <td class="success">$${neto.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td>
             <td>
                 <div class="badge-container">
-                    <button class="btn btn-secondary btn-xs btn-emp-view" data-id="${emp.id}">🔍 Ver/Vales</button>
-                    <button class="btn btn-secondary btn-xs btn-emp-edit" data-id="${emp.id}">✏️ Editar</button>
+                    <button type="button" class="btn btn-secondary btn-xs btn-emp-view" data-id="${emp.id}" onclick="openEmployeeDetails('${emp.id}')">🔍 Ver/Vales</button>
+                    <button type="button" class="btn btn-secondary btn-xs btn-emp-edit" data-id="${emp.id}" onclick="openEmployeeForm('${emp.id}')">✏️ Editar</button>
                 </div>
             </td>
         `;
@@ -358,7 +359,7 @@ function renderEmployeesTable() {
 
 function setupEmployeeForm() {
     // Configurar buscador
-    document.getElementById('emp-search-input').addEventListener('input', renderEmployeesTable);
+    document.getElementById('emp-search-input')?.addEventListener('input', renderEmployeesTable);
 
     // Botones de modals
     const newEmpBtn = document.getElementById('btn-nuevo-empleado');
@@ -371,38 +372,30 @@ function setupEmployeeForm() {
     const detailModal = document.getElementById('modal-empleado-detail');
     const closeDetailBtn = document.getElementById('close-emp-detail');
 
-    newEmpBtn.addEventListener('click', () => openEmployeeForm());
+    if (newEmpBtn) {
+        newEmpBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openEmployeeForm(null);
+        });
+    }
     
-    closeFormBtn.addEventListener('click', () => formModal.classList.remove('active'));
-    cancelFormBtn.addEventListener('click', () => formModal.classList.remove('active'));
-    
-    closeDetailBtn.addEventListener('click', () => detailModal.classList.remove('active'));
+    closeFormBtn?.addEventListener('click', () => formModal?.classList.remove('active'));
+    cancelFormBtn?.addEventListener('click', () => formModal?.classList.remove('active'));
+    closeDetailBtn?.addEventListener('click', () => detailModal?.classList.remove('active'));
 
-    syncEmpBtn.addEventListener('click', async () => {
-        syncEmpBtn.innerText = 'Sincronizando...';
-        syncEmpBtn.disabled = true;
-        await loadEmployeesList();
-        syncEmpBtn.innerText = 'Sincronizar';
-        syncEmpBtn.disabled = false;
-    });
+    if (syncEmpBtn) {
+        syncEmpBtn.addEventListener('click', async () => {
+            syncEmpBtn.innerText = 'Sincronizando...';
+            syncEmpBtn.disabled = true;
+            await loadEmployeesList();
+            syncEmpBtn.innerText = 'Sincronizar';
+            syncEmpBtn.disabled = false;
+        });
+    }
 
     const simularBtn = document.getElementById('btn-simular-datos');
     if (simularBtn) {
-        simularBtn.addEventListener('click', async () => {
-            simularBtn.disabled = true;
-            simularBtn.innerText = '⚡ Simulando...';
-            try {
-                await fetch('/api/simular-demo', { method: 'POST' });
-                await loadEmployeesList();
-                await loadClosuresList();
-                alert("⚡ ¡Modo Simulación Activo! Se cargaron 5 empleados con sus sueldos y vales, además de informes Z de ejemplo.");
-            } catch(e) {
-                console.error(e);
-            } finally {
-                simularBtn.disabled = false;
-                simularBtn.innerText = '⚡ Simular Datos Demo';
-            }
-        });
+        simularBtn.addEventListener('click', () => simularDatosDemo());
     }
 
     const cierreMesBtn = document.getElementById('btn-cierre-mes-general');
@@ -422,11 +415,12 @@ function setupEmployeeForm() {
     }
 
     // Enviar formulario (Agregar / Editar Empleado)
-    employeeForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const empId = document.getElementById('emp-form-id').value;
-        const nombre = document.getElementById('emp-nombre').value.trim();
+    if (employeeForm) {
+        employeeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const empId = document.getElementById('emp-form-id').value;
+            const nombre = document.getElementById('emp-nombre').value.trim();
         const cargo = document.getElementById('emp-cargo').value.trim();
         const sueldo = parseFloat(document.getElementById('emp-sueldo').value) || 0;
 
@@ -463,10 +457,12 @@ function setupEmployeeForm() {
             document.getElementById('dash-emp-count').innerText = state.employees.length;
         }
     });
+    }
 
     // Formulario de Carga de Vales Manuales
     const formVale = document.getElementById('form-cargar-vale');
-    formVale.addEventListener('submit', async (e) => {
+    if (formVale) {
+        formVale.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!state.activeEmployee) return;
 
@@ -515,6 +511,7 @@ function setupEmployeeForm() {
             openEmployeeDetails(state.activeEmployee.id);
         }
     });
+    }
 
     // Manejo de tabs en el modal de detalle del empleado
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -542,24 +539,25 @@ function openEmployeeForm(empId = null) {
     const modal = document.getElementById('modal-empleado-form');
     const title = document.getElementById('emp-form-title');
     const form = document.getElementById('form-empleado');
-    form.reset();
+    if (form) form.reset();
 
-    if (empId) {
-        title.innerText = 'Editar Datos Empleado';
+    if (empId && typeof empId === 'string') {
+        if (title) title.innerText = 'Editar Datos Empleado';
         const emp = state.employees.find(x => String(x.id) === String(empId));
         if (emp) {
-            document.getElementById('emp-form-id').value = emp.id;
-            document.getElementById('emp-nombre').value = emp.nombre;
-            document.getElementById('emp-cargo').value = emp.cargo || '';
-            document.getElementById('emp-sueldo').value = emp.sueldo_base_mensual || 0;
+            if (document.getElementById('emp-form-id')) document.getElementById('emp-form-id').value = emp.id;
+            if (document.getElementById('emp-nombre')) document.getElementById('emp-nombre').value = emp.nombre;
+            if (document.getElementById('emp-cargo')) document.getElementById('emp-cargo').value = emp.cargo || '';
+            if (document.getElementById('emp-sueldo')) document.getElementById('emp-sueldo').value = emp.sueldo_base_mensual || 0;
         }
     } else {
-        title.innerText = 'Agregar Nuevo Empleado';
-        document.getElementById('emp-form-id').value = '';
+        if (title) title.innerText = 'Agregar Nuevo Empleado';
+        if (document.getElementById('emp-form-id')) document.getElementById('emp-form-id').value = '';
     }
 
-    modal.classList.add('active');
+    if (modal) modal.classList.add('active');
 }
+window.openEmployeeForm = openEmployeeForm;
 
 function openEmployeeDetails(empId) {
     const emp = state.employees.find(x => String(x.id) === String(empId));
@@ -622,6 +620,7 @@ function openEmployeeDetails(empId) {
 
     modal.classList.add('active');
 }
+window.openEmployeeDetails = openEmployeeDetails;
 
 async function anularValeEmpleado(empId, valeId) {
     let updatedList = state.employees.map(emp => {
@@ -649,6 +648,28 @@ async function anularValeEmpleado(empId, valeId) {
         openEmployeeDetails(empId);
     }
 }
+
+async function simularDatosDemo() {
+    const simularBtn = document.getElementById('btn-simular-datos');
+    if (simularBtn) {
+        simularBtn.disabled = true;
+        simularBtn.innerText = '⚡ Simulando...';
+    }
+    try {
+        await fetch('/api/simular-demo', { method: 'POST' });
+        await loadEmployeesList();
+        await loadClosuresList();
+        alert("⚡ ¡Modo Simulación Activo! Se cargaron 5 empleados con sus sueldos y vales, además de informes Z de ejemplo.");
+    } catch(e) {
+        console.error(e);
+    } finally {
+        if (simularBtn) {
+            simularBtn.disabled = false;
+            simularBtn.innerText = '⚡ Simular Datos Demo';
+        }
+    }
+}
+window.simularDatosDemo = simularDatosDemo;
 
 // FUNCIONES: Cierre de Mes General y Liquidación Individual de Sueldo
 async function cierreDeMesGeneral() {
@@ -716,6 +737,7 @@ Se realizará lo siguiente:
         }
     }
 }
+window.cierreDeMesGeneral = cierreDeMesGeneral;
 
 async function liquidarEmpleadoIndividual(empId) {
     const emp = state.employees.find(x => String(x.id) === String(empId));
