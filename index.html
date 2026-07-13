@@ -203,7 +203,7 @@
                         <div class="search-box">
                             <input type="text" id="emp-search-input" placeholder="Buscar por nombre o ID...">
                         </div>
-                        <button class="btn btn-primary" id="btn-nuevo-empleado">
+                        <button type="button" class="btn btn-primary" id="btn-nuevo-empleado" onclick="openEmployeeForm(null)">
                             <span class="btn-icon">+</span> Nuevo Empleado
                         </button>
                     </div>
@@ -212,9 +212,8 @@
                         <div class="panel-header">
                             <h3>Nómina de Personal y Vales de Caja</h3>
                             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                <button class="btn btn-info btn-sm" id="btn-simular-datos" title="Cargar empleados, ventas y vales simulados de prueba">⚡ Simular Datos Demo</button>
-                                <button class="btn btn-warning btn-sm" id="btn-cierre-mes-general" title="Reiniciar vales acumulados y restaurar sueldos al terminar el mes">🗓️ Cierre de Mes (Reiniciar Vales)</button>
-                                <button class="btn btn-secondary btn-sm" id="btn-sync-empleados">Sincronizar</button>
+                                <button type="button" class="btn btn-warning btn-sm" id="btn-cierre-mes-general" title="Reiniciar vales acumulados y restaurar sueldos al terminar el mes" onclick="cierreDeMesGeneral()">🗓️ Cierre de Mes (Reiniciar Vales)</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btn-sync-empleados" onclick="loadEmployeesList()">Sincronizar</button>
                             </div>
                         </div>
                         <div class="panel-body">
