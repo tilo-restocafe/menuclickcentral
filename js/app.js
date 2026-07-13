@@ -1,8 +1,4 @@
-Acá tenés el código completo de tu archivo `app.js` corregido.
 
-Se reemplazaron todas las llamadas que utilizaban la clase `.active` para los modales y se cambiaron por `.modal-open` para evitar el conflicto con los botones de navegación de la barra lateral (`.nav-item.active`), solucionando la pantalla colgada de raíz.
-
-```javascript
 // ===================================================================
 // GLOBAL STATE & INITIALIZATION
 // ===================================================================
