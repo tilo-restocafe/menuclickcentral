@@ -334,8 +334,8 @@ function renderEmployeesTable() {
             <td class="success">$${neto.toLocaleString('es-AR', {minimumFractionDigits: 2})}</td>
             <td>
                 <div class="badge-container">
-                    <button type="button" class="btn btn-secondary btn-xs btn-emp-view" data-id="${emp.id}" onclick="openEmployeeDetails('${emp.id}')">🔍 Ver/Vales</button>
-                    <button type="button" class="btn btn-secondary btn-xs btn-emp-edit" data-id="${emp.id}" onclick="openEmployeeForm('${emp.id}')">✏️ Editar</button>
+                    <button type="button" class="btn btn-secondary btn-xs btn-emp-view" data-id="${emp.id}">🔍 Ver/Vales</button>
+                    <button type="button" class="btn btn-secondary btn-xs btn-emp-edit" data-id="${emp.id}">✏️ Editar</button>
                 </div>
             </td>
         `;
