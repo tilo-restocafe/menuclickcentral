@@ -837,7 +837,7 @@ hr {
 
 .vale-item-form {
     display: grid;
-    grid-template-columns: 1.5fr 1fr auto;
+    grid-template-columns: 1.2fr 0.8fr 1.2fr auto;
     gap: 0.5rem;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.02);
