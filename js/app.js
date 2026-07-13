@@ -615,8 +615,45 @@ function openEmployeeDetails(empId) {
         });
     }
 
+    // Renderizar historial de cierres de mes pasados
+    const cierresContainer = document.getElementById('emp-cierres-history-container');
+    if (cierresContainer) {
+        const cierresHist = emp.historial_cierre_meses || [];
+        if (cierresHist.length === 0) {
+            cierresContainer.innerHTML = `<div class="text-center text-muted" style="padding: 24px;">No hay cierres de mes registrados anteriormente.</div>`;
+        } else {
+            const sortedCierres = [...cierresHist].sort((a,b) => new Date(b.fecha_cierre) - new Date(a.fecha_cierre));
+            cierresContainer.innerHTML = sortedCierres.map(c => {
+                const totalVales = parseFloat(c.total_vales_deducidos || 0);
+                const sueldoBaseCierre = parseFloat(c.sueldo_base || 0);
+                const netoPagado = parseFloat(c.neto_pagado || (sueldoBaseCierre - totalVales));
+                const valesList = (c.vales_detallados && c.vales_detallados.length > 0)
+                    ? `<div style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px;">
+                        <strong style="font-size: 12px; color: var(--text-muted);">Vales descontados en ese mes:</strong>
+                        <ul style="margin: 4px 0 0 16px; font-size: 12px;">
+                            ${c.vales_detallados.map(v => `<li><code>${v.fecha || ''}</code> - ${v.concepto}: <strong>$${parseFloat(v.monto || 0).toLocaleString('es-AR', {minimumFractionDigits: 2})}</strong></li>`).join('')}
+                        </ul>
+                       </div>`
+                    : `<div style="margin-top: 6px; font-size: 12px; color: var(--text-muted);">Sin vales descontados en ese período.</div>`;
+
+                return `
+                <div class="panel glass" style="margin-bottom: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.15);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: #4ade80;">🗓️ Cierre del: ${c.fecha_cierre}</span>
+                        <span class="badge success">Pagado: $${netoPagado.toLocaleString('es-AR', {minimumFractionDigits: 2})}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                        <span>Sueldo Base: <strong>$${sueldoBaseCierre.toLocaleString('es-AR', {minimumFractionDigits: 2})}</strong></span>
+                        <span class="danger">Vales Deducidos: <strong>-$${totalVales.toLocaleString('es-AR', {minimumFractionDigits: 2})}</strong></span>
+                    </div>
+                    ${valesList}
+                </div>`;
+            }).join('');
+        }
+    }
+
     // Resetear a pestaña activa: Historial
-    document.querySelector('.tab-btn[data-tab="tab-historial"]').click();
+    document.querySelector('.tab-btn[data-tab="tab-historial"]')?.click();
 
     modal.classList.add('active');
 }
