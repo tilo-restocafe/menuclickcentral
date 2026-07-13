@@ -43,6 +43,27 @@
             historial_vales: [
                 { id_vale: 'val-01', fecha: '2026-07-02', hora: '14:30:00', concepto: 'Adelanto compra supermercado', monto: 20000 },
                 { id_vale: 'val-02', fecha: '2026-07-08', hora: '18:15:00', concepto: 'Adelanto fin de semana', monto: 15000 }
+            ],
+            historial_cierre_meses: [
+                {
+                    fecha_cierre: '2026-06-30',
+                    sueldo_base: 650000,
+                    total_vales_deducidos: 45000,
+                    neto_pagado: 605000,
+                    vales_detallados: [
+                        { fecha: '2026-06-12', concepto: 'Adelanto alquiler', monto: 30000 },
+                        { fecha: '2026-06-22', concepto: 'Adelanto varios', monto: 15000 }
+                    ]
+                },
+                {
+                    fecha_cierre: '2026-05-31',
+                    sueldo_base: 620000,
+                    total_vales_deducidos: 20000,
+                    neto_pagado: 600000,
+                    vales_detallados: [
+                        { fecha: '2026-05-15', concepto: 'Adelanto quincena', monto: 20000 }
+                    ]
+                }
             ]
         },
         {
