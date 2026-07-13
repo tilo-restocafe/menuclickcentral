@@ -479,8 +479,9 @@
 
                 <div class="employee-tabs">
                     <div class="tab-headers">
-                        <button class="tab-btn active" data-tab="tab-historial">Historial de Vales</button>
-                        <button class="tab-btn" data-tab="tab-nuevo-vale">Cargar Vale Manual</button>
+                        <button class="tab-btn active" data-tab="tab-historial">Historial Mes Actual</button>
+                        <button class="tab-btn" data-tab="tab-cierres-pasados">🗓️ Meses Cerrados</button>
+                        <button class="tab-btn" data-tab="tab-nuevo-vale">+ Cargar Vale</button>
                     </div>
                     
                     <div class="tab-contents">
@@ -500,6 +501,13 @@
                                         <!-- Cargado dinámicamente -->
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+
+                        <!-- Historial de Cierres Pasados -->
+                        <div id="tab-cierres-pasados" class="tab-pane">
+                            <div id="emp-cierres-history-container" class="max-h-300" style="overflow-y: auto; padding: 8px 0;">
+                                <!-- Cargado dinámicamente -->
                             </div>
                         </div>
 
