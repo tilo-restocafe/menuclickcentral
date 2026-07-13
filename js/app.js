@@ -225,16 +225,31 @@ function setupConfigForm() {
     testBtn.addEventListener('click', async () => {
         testBtn.innerText = 'Probando...';
         testBtn.disabled = true;
+
+        const payload = {
+            GITHUB_USER: document.getElementById('cfg-github-user')?.value.trim() || '',
+            GITHUB_REPO: document.getElementById('cfg-github-repo')?.value.trim() || ''
+        };
+        const rawToken = document.getElementById('cfg-github-token')?.value;
+        if (rawToken && rawToken !== '••••••••••••••••') {
+            payload.GITHUB_TOKEN = rawToken.trim();
+        }
+
         try {
-            const res = await fetch('/api/test-github');
+            const res = await fetch('/api/test-github', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
             const data = await res.json();
             if (data.success) {
                 alert('✅ Exito: ' + data.message);
+                await checkConfigStatus();
             } else {
-                alert('❌ Error: ' + data.error + '\n\nDetalles: ' + JSON.stringify(data.detalles));
+                alert('❌ Error: ' + data.error + (data.detalles ? '\n\nDetalles: ' + JSON.stringify(data.detalles) : ''));
             }
         } catch (err) {
-            alert('❌ Error de comunicación con el servidor central.');
+            alert('❌ Error de comunicación con el servidor central: ' + err.message);
         } finally {
             testBtn.innerText = 'Probar Conexión';
             testBtn.disabled = false;
@@ -375,6 +390,25 @@ function setupEmployeeForm() {
         syncEmpBtn.innerText = 'Sincronizar';
         syncEmpBtn.disabled = false;
     });
+
+    const simularBtn = document.getElementById('btn-simular-datos');
+    if (simularBtn) {
+        simularBtn.addEventListener('click', async () => {
+            simularBtn.disabled = true;
+            simularBtn.innerText = '⚡ Simulando...';
+            try {
+                await fetch('/api/simular-demo', { method: 'POST' });
+                await loadEmployeesList();
+                await loadClosuresList();
+                alert("⚡ ¡Modo Simulación Activo! Se cargaron 5 empleados con sus sueldos y vales, además de informes Z de ejemplo.");
+            } catch(e) {
+                console.error(e);
+            } finally {
+                simularBtn.disabled = false;
+                simularBtn.innerText = '⚡ Simular Datos Demo';
+            }
+        });
+    }
 
     const cierreMesBtn = document.getElementById('btn-cierre-mes-general');
     if (cierreMesBtn) {
@@ -1263,7 +1297,7 @@ function agregarValeFilaWizard() {
             ${optionsHtml}
         </select>
         <input type="number" class="wizard-vale-monto" placeholder="0.00" min="0.01" step="0.01" value="0.00" required>
-        <input type="text" class="wizard-vale-detalle" placeholder="Concepto (ej. Almuerzo)" style="display:none;">
+        <input type="text" class="wizard-vale-detalle" placeholder="Concepto (ej. Almuerzo)">
         <button type="button" class="btn btn-danger btn-xs btn-nc-quitar-vale" style="padding: 0.2rem 0.4rem; height: 32px;">×</button>
     `;
 
