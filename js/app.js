@@ -383,6 +383,13 @@ function setupEmployeeForm() {
     cancelFormBtn?.addEventListener('click', () => formModal?.classList.remove('active'));
     closeDetailBtn?.addEventListener('click', () => detailModal?.classList.remove('active'));
 
+    // Cierre universal de cualquier modal al tocar fondo o botón cerrar
+    window.addEventListener('click', (e) => {
+        if (e.target && e.target.classList && e.target.classList.contains('modal')) {
+            e.target.classList.remove('active');
+        }
+    });
+
     if (syncEmpBtn) {
         syncEmpBtn.addEventListener('click', async () => {
             syncEmpBtn.innerText = 'Sincronizando...';
