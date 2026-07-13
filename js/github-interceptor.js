@@ -71,8 +71,10 @@
         return { ok: res.ok, status: res.status, body: body };
     }
 
-    // Guardar fetch original
-    window.originalFetch = window.fetch.bind(window);
+    // Guardar fetch original solo si no se ha guardado previamente
+    if (!window.originalFetch) {
+        window.originalFetch = window.fetch.bind(window);
+    }
 
     // Sobreescribir fetch global
     window.fetch = async function(url, options = {}) {
