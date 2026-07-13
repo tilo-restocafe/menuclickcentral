@@ -1,4 +1,3 @@
-
 // ===================================================================
 // GLOBAL STATE & INITIALIZATION
 // ===================================================================
@@ -374,10 +373,10 @@ function setupEmployeeForm() {
 
     newEmpBtn.addEventListener('click', () => openEmployeeForm());
     
-    closeFormBtn.addEventListener('click', () => formModal.classList.remove('modal-open'));
-    cancelFormBtn.addEventListener('click', () => formModal.classList.remove('modal-open'));
+    closeFormBtn.addEventListener('click', () => formModal.classList.remove('active'));
+    cancelFormBtn.addEventListener('click', () => formModal.classList.remove('active'));
     
-    closeDetailBtn.addEventListener('click', () => detailModal.classList.remove('modal-open'));
+    closeDetailBtn.addEventListener('click', () => detailModal.classList.remove('active'));
 
     syncEmpBtn.addEventListener('click', async () => {
         syncEmpBtn.innerText = 'Sincronizando...';
@@ -459,7 +458,7 @@ function setupEmployeeForm() {
 
         const success = await saveEmployeesToGitHub(updatedList);
         if (success) {
-            formModal.classList.remove('modal-open');
+            formModal.classList.remove('active');
             await loadEmployeesList();
             document.getElementById('dash-emp-count').innerText = state.employees.length;
         }
@@ -559,7 +558,7 @@ function openEmployeeForm(empId = null) {
         document.getElementById('emp-form-id').value = '';
     }
 
-    modal.classList.add('modal-open');
+    modal.classList.add('active');
 }
 
 function openEmployeeDetails(empId) {
@@ -621,7 +620,7 @@ function openEmployeeDetails(empId) {
     // Resetear a pestaña activa: Historial
     document.querySelector('.tab-btn[data-tab="tab-historial"]').click();
 
-    modal.classList.add('modal-open');
+    modal.classList.add('active');
 }
 
 async function anularValeEmpleado(empId, valeId) {
@@ -710,7 +709,7 @@ Se realizará lo siguiente:
     } catch(e) {
         console.error("Error en Cierre de Mes:", e);
         alert("Ocurrió un error al procesar el cierre: " + e.message);
-    } fillalmente {
+    } finally {
         if (btn) {
             btn.disabled = false;
             btn.innerHTML = '🗓️ Cierre de Mes (Reiniciar Vales)';
@@ -804,6 +803,8 @@ function renderClosuresTable() {
     
     // Parsear cierres
     const parsedClosures = state.closures.map(c => {
+        // Formato esperado: cierres/AÑO/MES/dia-DIA-TURNO.json
+        // Ej: cierres/2026/07/dia-04-noche.json
         const parts = c.path.split('/');
         let anoMes = '-';
         let nombreArchivo = parts[parts.length - 1];
@@ -812,6 +813,7 @@ function renderClosuresTable() {
         let fullDate = '-';
         if (parts.length >= 4) {
             anoMes = `${parts[1]}-${parts[2]}`;
+            // extraer turno de 'dia-04-noche.json'
             const filename = parts[3];
             const fileParts = filename.replace('.json', '').split('-');
             if (fileParts.length >= 3) {
@@ -835,6 +837,7 @@ function renderClosuresTable() {
         return matchSearch && matchTurno;
     });
 
+    // Ordenar de más reciente a más antiguo
     filtered.sort((a, b) => b.path.localeCompare(a.path));
 
     if (filtered.length === 0) {
@@ -846,6 +849,8 @@ function renderClosuresTable() {
         const tr = document.createElement('tr');
         const rowId = 'row-' + c.sha;
         tr.id = rowId;
+        // Orden exacto de las columnas:
+        // 1. Fecha/Hora, 2. Turno, 3. Débito, 4. Crédito, 5. QR, 6. Gastos/Ext., 7. Vales, 8. Efectivo, 9. Total Venta, 10. Acción
         tr.innerHTML = `
             <td id="fecha-${c.sha}"><span class="text-highlight">${c.fullDate}</span></td>
             <td><span class="badge">${c.turno.toUpperCase()}</span></td>
@@ -863,6 +868,7 @@ function renderClosuresTable() {
         `;
         tbody.appendChild(tr);
 
+        // Fetch asíncrono para llenar los datos
         fetch('/api/cierres/detalle?path=' + encodeURIComponent(c.path))
             .then(res => res.json())
             .then(data => {
@@ -871,6 +877,7 @@ function renderClosuresTable() {
                     const cr = data.data.conteo_real || {};
                     const closure = data.data;
                     
+                    // Parsear Hora desde el ID (cie-[timestamp])
                     let horaStr = '';
                     if (closure.id && closure.id.startsWith('cie-')) {
                         const ts = parseInt(closure.id.replace('cie-', ''));
@@ -904,7 +911,7 @@ function renderClosuresTable() {
                     }
                     if (elVales) {
                         const valVales = parseFloat(ds.vales_deducidos || 0);
-                        elVales.innerHTML = valVales > 0 ? `<span class="danger">$${valGastos.toLocaleString('es-AR', {minimumFractionDigits: 0})}</span>` : '-';
+                        elVales.innerHTML = valVales > 0 ? `<span class="danger">$${valVales.toLocaleString('es-AR', {minimumFractionDigits: 0})}</span>` : '-';
                     }
                     if (elEfec) {
                         const efectivoCaja = parseFloat(ds.efectivo_teorico || 0) || Math.max(0, parseFloat(ds.ventas_totales || 0) - parseFloat(ds.tarjeta_debito || 0) - parseFloat(ds.tarjeta_credito || 0) - parseFloat(ds.qr_digital || 0));
@@ -949,6 +956,7 @@ function renderRecentClosuresDashboard() {
         return;
     }
 
+    // Copiar, ordenar desc y tomar los primeros 5
     const recent = [...state.closures]
         .sort((a, b) => b.path.localeCompare(a.path))
         .slice(0, 5);
@@ -984,7 +992,7 @@ async function openCierreDetails(path) {
     const modal = document.getElementById('modal-cierre-detalle');
     const container = document.getElementById('cierre-detail-body');
     container.innerHTML = `<div class="text-center text-muted">Obteniendo informe de GitHub...</div>`;
-    modal.classList.add('modal-open');
+    modal.classList.add('active');
 
     try {
         const response = await fetch(`/api/cierres/detalle?path=${encodeURIComponent(path)}`);
@@ -1107,6 +1115,7 @@ async function openCierreDetails(path) {
 }
 
 function setupClosureForm() {
+    // Configurar buscador y filtros
     document.getElementById('cierres-search-input').addEventListener('input', renderClosuresTable);
     document.getElementById('cierres-filter-turno').addEventListener('change', renderClosuresTable);
 
@@ -1125,14 +1134,16 @@ function setupClosureForm() {
         document.getElementById('nc-vales-container').innerHTML = `<div class="no-vales-msg text-muted">No se han registrado vales de personal para este cierre.</div>`;
         document.getElementById('nc-vales-total').value = 0;
         
+        // Disparar recálculo de diferencia
         calcularDiferenciaWizard();
-        modal.classList.add('modal-open');
+        modal.classList.add('active');
     });
 
-    closeBtn.addEventListener('click', () => modal.classList.remove('modal-open'));
-    cancelBtn.addEventListener('click', () => modal.classList.remove('modal-open'));
-    closeDetailBtn.addEventListener('click', () => modalDetail.classList.remove('modal-open'));
+    closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+    cancelBtn.addEventListener('click', () => modal.classList.remove('active'));
+    closeDetailBtn.addEventListener('click', () => modalDetail.classList.remove('active'));
 
+    // Calcular diferencia en tiempo real
     const teoricoInput = document.getElementById('nc-efectivo-teorico');
     const fisicoInput = document.getElementById('nc-efectivo-fisico');
     
@@ -1141,9 +1152,11 @@ function setupClosureForm() {
         input.addEventListener('input', calcularDiferenciaWizard);
     });
 
+    // Agregar vale dinámico al wizard
     const btnAgregarVale = document.getElementById('btn-nc-agregar-vale');
     btnAgregarVale.addEventListener('click', agregarValeFilaWizard);
 
+    // Guardar Cierre Z
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -1156,6 +1169,7 @@ function setupClosureForm() {
         const turno = document.getElementById('nc-turno').value;
         const responsable_caja = document.getElementById('nc-responsable').value.trim();
 
+        // Datos Sistema
         const ventas_totales = parseFloat(document.getElementById('nc-ventas').value) || 0;
         const efectivo_teorico = parseFloat(document.getElementById('nc-efectivo-teorico').value) || 0;
         const tarjeta_debito = parseFloat(document.getElementById('nc-tarjeta-deb').value) || 0;
@@ -1166,10 +1180,12 @@ function setupClosureForm() {
         
         const caja_neta_teorica = ventas_totales - tarjeta_debito - tarjeta_credito - qr_digital - gastos - vales_deducidos;
 
+        // Conteo Real
         const efectivo_fisico = parseFloat(document.getElementById('nc-efectivo-fisico').value) || 0;
         const diferencia = efectivo_fisico - efectivo_teorico;
         const notas = document.getElementById('nc-notas').value.trim();
 
+        // Vales de personal detallados
         const vales_detallados = [];
         const valeFilas = document.querySelectorAll('.vale-item-form');
         
@@ -1228,7 +1244,7 @@ function setupClosureForm() {
             const data = await response.json();
             if (data.success) {
                 alert('Cierre Z subido con éxito a GitHub y vales aplicados.');
-                modal.classList.remove('modal-open');
+                modal.classList.remove('active');
                 await loadInitialData();
             } else {
                 alert('Error al procesar cierre: ' + data.error + '\n\nDetalles: ' + JSON.stringify(data.detalles));
@@ -1272,6 +1288,7 @@ function agregarValeFilaWizard() {
     const row = document.createElement('div');
     row.className = 'vale-item-form';
 
+    // Generar dropdown de empleados
     const optionsHtml = state.employees.map(emp => `<option value="${emp.id}">${emp.nombre}</option>`).join('');
     
     row.innerHTML = `
@@ -1284,6 +1301,7 @@ function agregarValeFilaWizard() {
         <button type="button" class="btn btn-danger btn-xs btn-nc-quitar-vale" style="padding: 0.2rem 0.4rem; height: 32px;">×</button>
     `;
 
+    // Botón para eliminar esta fila
     row.querySelector('.btn-nc-quitar-vale').addEventListener('click', () => {
         row.remove();
         if (container.querySelectorAll('.vale-item-form').length === 0) {
@@ -1292,6 +1310,7 @@ function agregarValeFilaWizard() {
         recalcularTotalValesWizard();
     });
 
+    // Cambiar input de monto recalculador
     row.querySelector('.wizard-vale-monto').addEventListener('input', recalcularTotalValesWizard);
 
     container.appendChild(row);
@@ -1313,7 +1332,7 @@ const closeConsolidadoBtn = document.getElementById('close-consolidado');
 if (closeConsolidadoBtn) {
     closeConsolidadoBtn.addEventListener('click', () => {
         const mod = document.getElementById('modal-consolidado');
-        if (mod) mod.classList.remove('modal-open');
+        if (mod) mod.classList.remove('active');
     });
 }
 
@@ -1322,6 +1341,7 @@ async function consolidarDia(dateStr) {
     const [year, month, day] = dateStr.split('-');
     const dayStr = 'dia-' + day;
     
+    // Encontrar cierres que coincidan con el año/mes/dia
     const targetClosures = state.closures.filter(c => c.path.includes('/' + year + '/' + month + '/' + dayStr + '-'));
     
     if (targetClosures.length === 0) {
@@ -1334,7 +1354,7 @@ async function consolidarDia(dateStr) {
     
     title.innerText = 'Reporte Consolidado del Día: ' + dateStr;
     container.innerHTML = '<div class="text-center" style="padding:2rem;">Cargando cierres... <div class="spinner"></div></div>';
-    modal.classList.add('modal-open');
+    modal.classList.add('active');
 
     try {
         let totalVentas = 0;
@@ -1427,5 +1447,3 @@ async function consolidarDia(dateStr) {
         container.innerHTML = '<div class="danger text-center">Error al consolidar: ' + e.message + '</div>';
     }
 }
-
-```
