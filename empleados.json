@@ -47,20 +47,28 @@
     ],
     "cargo": "Mozo",
     "sueldo_base_mensual": 1000000,
-    "saldo_actual_sueldo": 950000,
-    "vales_acumulados_mes": 50000,
-    "historial_vales": [
+    "saldo_actual_sueldo": 1000000,
+    "vales_acumulados_mes": 0,
+    "historial_vales": [],
+    "historial_cierre_meses": [
       {
-        "id_vale": "mov-1783886968964",
-        "fecha": "2026-07-12",
-        "hora": "17:09:28",
-        "concepto": "Vale 1 Carlos (TM): vale",
-        "monto": 50000,
-        "cierre_caja_origen_id": "cie-1783888091498"
+        "fecha_cierre": "2026-07-15",
+        "sueldo_base": 1000000,
+        "total_vales_deducidos": 50000,
+        "neto_pagado": 950000,
+        "vales_detallados": [
+          {
+            "id_vale": "mov-1783886968964",
+            "fecha": "2026-07-12",
+            "hora": "17:09:28",
+            "concepto": "Vale 1 Carlos (TM): vale",
+            "monto": 50000,
+            "cierre_caja_origen_id": "cie-1783888091498"
+          }
+        ]
       }
     ],
-    "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-bac-tm-02",
@@ -109,7 +117,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-caf-tm-03",
@@ -133,7 +141,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-moz-tm-04",
@@ -157,7 +165,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-coc-tt-05",
@@ -213,7 +221,7 @@
         ]
       }
     ],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-bac-tt-06",
@@ -274,7 +282,7 @@
         ]
       }
     ],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-caf-tt-07",
@@ -303,7 +311,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-moz-tt-08",
@@ -337,7 +345,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-1782711979171-937",
@@ -361,7 +369,7 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-1783461093952-707",
@@ -396,7 +404,7 @@
         ]
       }
     ],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   },
   {
     "id": "emp-1783485947014-402",
@@ -414,6 +422,6 @@
     "vales_acumulados_mes": 0,
     "historial_vales": [],
     "historial_cierre_meses": [],
-    "ultimo_cierre_mes": "2026-07-12"
+    "ultimo_cierre_mes": "2026-07-15"
   }
 ]
